@@ -6,18 +6,30 @@ use Types::Standard qw/Str Bool ArrayRef/;
 
 use Postcodify::Area;
 
-has sido      => ( is => 'rw', isa => Str );
-has sigugun   => ( is => 'rw', isa => Str );
-has ilbangu   => ( is => 'rw', isa => Str );
-has eupmyeon  => ( is => 'rw', isa => Str );
-has dongri    => ( is => 'rw', isa => Str );
-has road      => ( is => 'rw', isa => Str );
-has pobox     => ( is => 'rw', isa => Str );
+has sido      => ( is => 'rw', isa => Str,      clearer => 1 );
+has sigugun   => ( is => 'rw', isa => Str,      clearer => 1 );
+has ilbangu   => ( is => 'rw', isa => Str,      clearer => 1 );
+has eupmyeon  => ( is => 'rw', isa => Str,      clearer => 1 );
+has dongri    => ( is => 'rw', isa => Str,      clearer => 1 );
+has road      => ( is => 'rw', isa => Str,      clearer => 1 );
+has pobox     => ( is => 'rw', isa => Str,      clearer => 1 );
 has numbers   => ( is => 'rw', isa => ArrayRef, default => sub { [] } );
 has buildings => ( is => 'rw', isa => ArrayRef, default => sub { [] } );
-has use_area => ( is => 'rw', isa => Bool, default => 0 );
-has lang     => ( is => 'rw', isa => Str,  default => 'KO' );
-has sort     => ( is => 'rw', isa => Str,  default => 'JUSO' );
+has use_area  => ( is => 'rw', isa => Bool,     default => 0 );
+has lang      => ( is => 'rw', isa => Str,      default => 'KO' );
+has sort      => ( is => 'rw', isa => Str,      default => 'JUSO' );
+
+sub clear {
+    my $self = shift;
+
+    map { my $m = "clear_$_"; $self->$m }
+        qw/sido sigugun ilbangu eupmyeon dongri road pobox/;
+    $self->numbers(   [] );
+    $self->buildings( [] );
+    $self->use_area(0);
+    $self->lang('KO');
+    $self->sort('JUSO');
+}
 
 sub parse {
     my ( $self, $keyword ) = @_;
