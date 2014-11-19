@@ -4,6 +4,8 @@ use utf8;
 use Moo;
 use Types::Standard qw/Str Bool ArrayRef/;
 
+use Postcodify::Area;
+
 has sido      => ( is => 'rw', isa => Str );
 has sigugun   => ( is => 'rw', isa => Str );
 has ilbangu   => ( is => 'rw', isa => Str );
