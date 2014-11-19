@@ -219,9 +219,9 @@ use overload '""' => sub {
     my $self = shift;
     my @address = map { $self->$_ if defined( $self->$_ ) }
         qw/sido sigugun ilbangu eupmyeon dongri road pobox/;
-    push @address, join( '-', $self->numbers )   if @{ $self->numbers };
-    push @address, join( ' ', $self->buildings ) if @{ $self->buildings };
-    return join( ' ', @address );
+    push @address, join( '-', @{ $self->numbers } )   if @{ $self->numbers };
+    push @address, join( ' ', @{ $self->buildings } ) if @{ $self->buildings };
+    return join( ' ', grep {length} @address );
 };
 
 
