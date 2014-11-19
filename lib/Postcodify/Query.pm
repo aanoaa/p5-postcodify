@@ -129,7 +129,7 @@ sub parse {
                 next;
             }
             elsif ( grep {/^$keyword$/} @Postcodify::Area::SIGUGUN ) {
-                $self->sigugn($keyword);
+                $self->sigugun($keyword);
                 $self->use_area(1);
                 next;
             }
