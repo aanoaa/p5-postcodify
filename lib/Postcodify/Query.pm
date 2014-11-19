@@ -45,25 +45,34 @@ sub parse {
     $keyword =~ s{([0-9]+)번지\s?([0-9]+)호}{$1-$2};
 
     ## 행정동, 도로명 등의 숫자 앞에 공백에 있는 경우 붙여쓴다.
-    $keyword =~ s{
-                \s
-                (?:
-                    ([가-힣]{1,3})
-                    \s+
-                    ([0-9]{1,2}[동리가])
-                |([가-힣]+)
-                    \s+
-                    ([동서남북]?[0-9]+번?[가나다라마바사아자차카타파하동서남북안]?[로길])
-                )
-             }{$1$2$3$4}gx;
+    $keyword =~ s{(^|\s)
+                  (?:
+                      ([가-힣]{1,3})
+                      \s+
+                      ([0-9]{1,2}[동리가])
+                  )
+             }{$1$2$3}x;
+
+    $keyword =~ s{(^|\s)
+                  (?:
+                      ([가-힣]+)
+                      \s+
+                      ([동서남북]?[0-9]+번?[가나다라마바사아자차카타파하동서남북안]?[로길])
+                  )
+             }{$1$2$3}x;
+
+    $self->clear;
 
     ## 영문 도로명주소 또는 지번주소인지 확인한다.
     if ( $keyword
-        =~ m/^(?:b|san|jiha)?(?:\s*|-)([0-9]+)?(?:-([0-9]+))?\s*(\w+(ro|gil|dong|ri))/
+        =~ m/^(?:b|san|jiha)?(?:\s*|-)([0-9]+)?(?:-([0-9]+))?\s*([a-z0-9-\x20]+(ro|gil|dong|ri))/i
         )
     {
+        my $number1   = $1;
+        my $number2   = $2;
         my $addr_en   = lc $3;
         my $addr_type = lc $4;
+        $addr_en =~ s/[^a-z0-9]//g;
         if ( $addr_type =~ m/^(ro|gil)$/ ) {
             $self->road($addr_en);
         }
@@ -72,14 +81,14 @@ sub parse {
             $self->sort('JIBEON');
         }
 
-        push @{ $self->numbers }, $1 if $1;
-        push @{ $self->numbers }, $2 if $2;
+        push @{ $self->numbers }, $number1 if $number1;
+        push @{ $self->numbers }, $number2 if $number2;
         $self->lang('EN');
         return $self;
     }
 
     ## 영문 사서함 주소인지 확인한다.
-    if ( $keyword =~ m/p\s*o\s*box\s*#?\\s*([0-9]+)(?:-([0-9]+))?/ ) {
+    if ( $keyword =~ m/p\s*?o\s*?box\s*#?\s*([0-9]+)(?:-([0-9]+))?/i ) {
         $self->pobox('사서함');
         push @{ $self->numbers }, $1 if $1;
         push @{ $self->numbers }, $2 if defined $2;
@@ -131,7 +140,9 @@ sub parse {
                     $self->sigugun("$1군");
                     $self->eupmyeon("$1$2");
                 }
-                elsif ( $self->sigugun && $keyword =~ /^읍|면$/ ) {
+                elsif ( $self->sigugun
+                    && ( $keyword eq '읍' || $keyword eq '면' ) )
+                {
                     $self->eupmyeon( $self->sigugun =~ s/군$/$keyword/r );
                 }
                 else {
@@ -209,7 +220,7 @@ sub parse {
 
         ## 그 밖의 키워드는 건물명으로 취급하되, 동·층·호수는 취급하지 않는다.
         if ( $keyword
-            =~ m/(?:[0-9a-z-]+|^[가나다라마바사])[동층호]?$/ )
+            !~ m/(?:[0-9a-z-]+|^[가나다라마바사])[동층호]?$/ )
         {
             push @{ $self->buildings },
                 $keyword =~ s/(?:아파트|a(?:pt)?|@)$//r;
