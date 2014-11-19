@@ -1,2 +1,2 @@
 requires 'Moo';
-requries 'Types::Standard';
+requires 'Types::Standard';
