@@ -3,6 +3,7 @@
 ^Makefile$
 ^blib/
 ^scripts/
+^examples/
 
 # version-control
 ^.git/
