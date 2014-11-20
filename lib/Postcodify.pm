@@ -43,7 +43,7 @@ sub search {
     my $address = $self->schema->resultset('PostcodifyAddress');
     ## http://search.cpan.org/~ribasushi/DBIx-Class/lib/DBIx/Class/Manual/Cookbook.pod#Multi-step_and_multiple_joins
     $attr{join}     = [];
-    $attr{prefetch} = 'roads';
+    $attr{prefetch} = 'road';
     $attr{distinct} = 1;
     if ( $q->use_area ) {
         $cond{sido_ko}     = $q->sido     if $q->sido;
@@ -55,19 +55,19 @@ sub search {
     ## 도로명주소로 검색하는 경우
     if ( $q->road && !@{ $q->buildings } ) {
         $search_type = 'JUSO';
-        push @{ $attr{join} }, 'keyword';
+        push @{ $attr{join} }, 'keywords';
         if ( $q->lang eq 'KO' ) {
             $cond{keyword_crc32} = crc32( $q->road );
         }
         else {
             pop @{ $attr{join} };
-            push @{ $attr{join} }, { 'keyword' => 'english' };
+            push @{ $attr{join} }, { 'keywords' => 'english' };
             $cond{'english.en_crc32'} = crc32( $q->road );
         }
 
         if ( @{ $q->numbers } ) {
             $search_type .= '+NUMS';
-            push @{ $attr{join} }, 'number';
+            push @{ $attr{join} }, 'numbers';
             $cond{'me.num_major'} = $q->numbers->[0];
             $cond{'me.num_minor'} = $q->numbers->[1] if $q->numbers->[1];
         }
@@ -77,20 +77,20 @@ sub search {
     ## 지번주소로 검색하는 경우
     elsif ( $q->dongri && !@{ $q->buildings } ) {
         $search_type = 'JIBEON';
-        push @{ $attr{join} }, 'keyword';
+        push @{ $attr{join} }, 'keywords';
         if ( $q->lang eq 'KO' ) {
             $cond{keyword_crc32} = crc32( $q->dongri );
         }
         else {
             pop @{ $attr{join} };
-            push @{ $attr{join} }, { 'keyword' => 'english' };
+            push @{ $attr{join} }, { 'keywords' => 'english' };
             $cond{'english.en_crc32'} = crc32( $q->dongri );
         }
 
         ## 번지수 쿼리를 작성한다.
         if ( $q->numbers->[0] ) {
             my $search_type .= '+NUMS';
-            push @{ $attr{join} }, 'number';
+            push @{ $attr{join} }, 'numbers';
             $cond{'me.num_major'} = $q->numbers->[0];
             $cond{'me.num_minor'} = $q->numbers->[1] if $q->numbers->[1];
         }
@@ -100,8 +100,8 @@ sub search {
 
         ## 검색 결과가 없다면 건물명을 동리로 잘못 해석했을 수도 있으므로 건물명 검색을 다시 시도해 본다.
         if ( !@{ $q->numbers } && !$rs->count && $q->lang eq 'KO' ) {
-            push @{ $attr{join} }, 'building';
-            $cond{keyword} = { -like => '%' . $q->dongri . '%' };
+            push @{ $attr{join} }, 'buildings';
+            $cond{'buildings.keyword'} = { -like => '%' . $q->dongri . '%' };
             $rs = $address->search( \%cond, \%attr );
             if ( $rs->count ) {
                 $search_type = 'BUILDING';
@@ -112,36 +112,36 @@ sub search {
     ## 건물명만으로 검색하는 경우
     elsif ( @{ $q->buildings } && !$q->road && !$q->dongri ) {
         $search_type = 'BUILDING';
-        push @{ $attr{join} }, 'building';
+        push @{ $attr{join} }, 'buildings';
         for my $building ( @{ $q->buildings } ) {
-            $cond{'building.keyword'} = { -like => '%' . $building . '%' };
+            $cond{'buildings.keyword'} = { -like => '%' . $building . '%' };
         }
         $rs = $address->search( \%cond, \%attr );
     }
     ## 도로명 + 건물명으로 검색하는 경우
     elsif ( @{ $q->buildings } && $q->road ) {
         $search_type = 'BUILDING+JUSO';
-        push @{ $attr{join} }, 'keyword', 'building';
+        push @{ $attr{join} }, 'keywords', 'buildings';
         $cond{keyword_crc32} = crc32( $q->road );
         for my $building ( @{ $q->buildings } ) {
-            $cond{'building.keyword'} = { -like => '%' . $building . '%' };
+            $cond{'buildings.keyword'} = { -like => '%' . $building . '%' };
         }
         $rs = $address->search( \%cond, \%attr );
     }
     ## 동리 + 건물명으로 검색하는 경우
     elsif ( @{ $q->buildings } && $q->dongri ) {
         $search_type = 'BUILDING+DONG';
-        push @{ $attr{join} }, 'keyword', 'building';
+        push @{ $attr{join} }, 'keywords', 'buildings';
         $cond{keyword_crc32} = crc32( $q->dongri );
         for my $building ( @{ $q->buildings } ) {
-            $cond{'building.keyword'} = { -like => '%' . $building . '%' };
+            $cond{'buildings.keyword'} = { -like => '%' . $building . '%' };
         }
         $rs = $address->search( \%cond, \%attr );
     }
     ## 사서함으로 검색하는 경우
     elsif ( $q->pobox ) {
         $search_type = 'POBOX';
-        push @{ $attr{join} }, 'pobox';
+        push @{ $attr{join} }, 'poboxes';
         $cond{keyword} = { -like => '%' . $q->pobox . '%' };
         if ( my $major = $q->numbers->[0] ) {
             $cond{'pobox.range_start_major'} = { '<=' => $major };
@@ -170,8 +170,8 @@ sub search {
         ## 검색 결과가 없다면 건물명을 읍면으로 잘못 해석했을 수도 있으므로 건물명 검색을 다시 시도해 본다.
         if ( !$rs->count && $q->lang eq 'KO' ) {
             ## TODO: 여기서 엄청느림
-            push @{ $attr{join} }, 'building';
-            $cond{'building.keyword'} = { -like => '%' . $q->eupmyeon . '%' };
+            push @{ $attr{join} }, 'buildings';
+            $cond{'buildings.keyword'} = { -like => '%' . $q->eupmyeon . '%' };
             $rs = $address->search( \%cond, \%attr );
             if ( $rs->count ) {
                 $search_type = 'BUILDING';

@@ -23,14 +23,14 @@ sub json {
         ## 한글 도로명 및 지번주소를 정리한다.
         my $address_ko_base = trim(
             sprintf "%s %s %s %s",
-            $row->roads->first->sido_ko     || '',
-            $row->roads->first->sigungu_ko  || '',
-            $row->roads->first->ilbangu_ko  || '',
-            $row->roads->first->eupmyeon_ko || ''
+            $row->road->sido_ko     || '',
+            $row->road->sigungu_ko  || '',
+            $row->road->ilbangu_ko  || '',
+            $row->road->eupmyeon_ko || ''
         );
         my $address_ko_new = trim(
             sprintf "%s %s %s%s",
-            $row->roads->first->road_name_ko || '',
+            $row->road->road_name_ko || '',
             $row->is_basement ? '지하' : '',
             $row->num_major || '',
             $row->num_minor ? '-' . $row->num_minor : ''
@@ -49,17 +49,17 @@ sub json {
         ## 영문 도로명 및 지번주소를 정리한다.
         my $address_en_base = trim(
             sprintf "%s %s %s %s",
-            $row->roads->first->eupmyeon_en || '',
-            $row->roads->first->ilbangu_en  || '',
-            $row->roads->first->sigungu_en  || '',
-            $row->roads->first->sido_en     || ''
+            $row->road->eupmyeon_en || '',
+            $row->road->ilbangu_en  || '',
+            $row->road->sigungu_en  || '',
+            $row->road->sido_en     || ''
         );
         my $address_en_new = trim(
             sprintf "%s %s%s %s",
             $row->is_basement ? 'Jiha' : '',
             $row->num_major || '',
             $row->num_minor ? '-' . $row->num_minor : '',
-            $row->roads->first->road_name_en || ''
+            $row->road->road_name_en || ''
         );
         my $address_en_old = trim(
             sprintf "%s %s%s %s",
