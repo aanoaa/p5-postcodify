@@ -114,7 +114,8 @@ sub search {
         $search_type = 'BUILDING';
         push @{ $attr{join} }, 'buildings';
         for my $building ( @{ $q->buildings } ) {
-            $cond{'buildings.keyword'} = { -like => '%' . $building . '%' };
+            push @{ $cond{'-or'} ||= [] },
+                'buildings.keyword' => { -like => '%' . $building . '%' };
         }
         $rs = $address->search( \%cond, \%attr );
     }
@@ -124,7 +125,8 @@ sub search {
         push @{ $attr{join} }, 'keywords', 'buildings';
         $cond{keyword_crc32} = crc32( $q->road );
         for my $building ( @{ $q->buildings } ) {
-            $cond{'buildings.keyword'} = { -like => '%' . $building . '%' };
+            push @{ $cond{'-or'} ||= [] },
+                'buildings.keyword' => { -like => '%' . $building . '%' };
         }
         $rs = $address->search( \%cond, \%attr );
     }
@@ -134,7 +136,8 @@ sub search {
         push @{ $attr{join} }, 'keywords', 'buildings';
         $cond{keyword_crc32} = crc32( $q->dongri );
         for my $building ( @{ $q->buildings } ) {
-            $cond{'buildings.keyword'} = { -like => '%' . $building . '%' };
+            push @{ $cond{'-or'} ||= [] },
+                'buildings.keyword' => { -like => '%' . $building . '%' };
         }
         $rs = $address->search( \%cond, \%attr );
     }
@@ -142,20 +145,18 @@ sub search {
     elsif ( $q->pobox ) {
         $search_type = 'POBOX';
         push @{ $attr{join} }, 'poboxes';
-        $cond{keyword} = { -like => '%' . $q->pobox . '%' };
+        $cond{'poboxes.keyword'} = { -like => '%' . $q->pobox . '%' };
         if ( my $major = $q->numbers->[0] ) {
-            $cond{'pobox.range_start_major'} = { '<=' => $major };
-            $cond{'pobox.range_end_major'}   = { '>=' => $major };
+            $cond{'poboxes.range_start_major'} = { '<=' => $major };
+            $cond{'poboxes.range_end_major'}   = { '>=' => $major };
             if ( my $minor = $q->numbers->[1] ) {
-                $cond{'pobox.range_start_minor'} = {
-                    -or => [
-                        'pobox.range_start_minor' => undef,
-                        -and                      => [
-                            'pobox.range_start_minor' => { '<=' => $minor },
-                            'pobox.range_end_minor'   => { '>=' => $minor },
-                        ]
+                $cond{'-or'} = [
+                    'poboxes.range_start_minor' => undef,
+                    -and                        => [
+                        'poboxes.range_start_minor' => { '<=' => $minor },
+                        'poboxes.range_end_minor'   => { '>=' => $minor },
                     ]
-                };
+                ];
             }
         }
 
