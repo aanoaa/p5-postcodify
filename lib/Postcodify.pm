@@ -5,6 +5,7 @@ use Moo;
 use String::CRC32 'crc32';
 
 use Postcodify::Query;
+use Postcodify::Result;
 use Postcodify::Schema;
 
 has config => (
@@ -179,7 +180,14 @@ sub search {
         }
     }
     ## 그 밖의 경우 검색 결과가 없는 것으로 한다.
-    return $rs;
+
+    return Postcodify::Result->new(
+        lang      => $q->lang,
+        sort      => $q->sort,
+        nums      => join( '-', @{ $q->numbers } ),
+        type      => $search_type,
+        resultset => $rs
+    );
 }
 
 1;
