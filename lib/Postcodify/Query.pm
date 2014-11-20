@@ -7,7 +7,7 @@ use Types::Standard qw/Str Bool ArrayRef/;
 use Postcodify::Area;
 
 has sido      => ( is => 'rw', isa => Str,      clearer => 1 );
-has sigugun   => ( is => 'rw', isa => Str,      clearer => 1 );
+has sigungu   => ( is => 'rw', isa => Str,      clearer => 1 );
 has ilbangu   => ( is => 'rw', isa => Str,      clearer => 1 );
 has eupmyeon  => ( is => 'rw', isa => Str,      clearer => 1 );
 has dongri    => ( is => 'rw', isa => Str,      clearer => 1 );
@@ -23,7 +23,7 @@ sub clear {
     my $self = shift;
 
     map { my $m = "clear_$_"; $self->$m }
-        qw/sido sigugun ilbangu eupmyeon dongri road pobox/;
+        qw/sido sigungu ilbangu eupmyeon dongri road pobox/;
     $self->numbers(   [] );
     $self->buildings( [] );
     $self->use_area(0);
@@ -131,19 +131,19 @@ sub parse {
         }
 
         ## 시군구읍면을 확인한다.
-        if ( my ($sigugun) = $keyword =~ m/.*([시군구읍면])$/ ) {
-            if ( $sigugun eq '읍' or $sigugun eq '면' ) {
-                if (  !$self->sigugun
+        if ( my ($sigungu) = $keyword =~ m/.*([시군구읍면])$/ ) {
+            if ( $sigungu eq '읍' or $sigungu eq '면' ) {
+                if (  !$self->sigungu
                     && $keyword =~ m/^(.+)군([읍면])$/
-                    && grep {/^$1군$/} @Postcodify::Area::SIGUGUN )
+                    && grep {/^$1군$/} @Postcodify::Area::SIGUNGU )
                 {
-                    $self->sigugun("$1군");
+                    $self->sigungu("$1군");
                     $self->eupmyeon("$1$2");
                 }
-                elsif ( $self->sigugun
+                elsif ( $self->sigungu
                     && ( $keyword eq '읍' || $keyword eq '면' ) )
                 {
-                    $self->eupmyeon( $self->sigugun =~ s/군$/$keyword/r );
+                    $self->eupmyeon( $self->sigungu =~ s/군$/$keyword/r );
                 }
                 else {
                     $self->eupmyeon($keyword);
@@ -151,8 +151,8 @@ sub parse {
                 $self->use_area(1);
                 next;
             }
-            elsif ( grep {/^$keyword$/} @Postcodify::Area::SIGUGUN ) {
-                $self->sigugun($keyword);
+            elsif ( grep {/^$keyword$/} @Postcodify::Area::SIGUNGU ) {
+                $self->sigungu($keyword);
                 $self->use_area(1);
                 next;
             }
@@ -160,13 +160,13 @@ sub parse {
                 next if @keywords > $i + 1;
             }
         }
-        elsif ( grep { $_ eq $keyword . '시' } @Postcodify::Area::SIGUGUN ) {
-            $self->sigugun( $keyword . '시' );
+        elsif ( grep { $_ eq $keyword . '시' } @Postcodify::Area::SIGUNGU ) {
+            $self->sigungu( $keyword . '시' );
             $self->use_area(1);
             next;
         }
-        elsif ( grep { $_ eq $keyword . '군' } @Postcodify::Area::SIGUGUN ) {
-            $self->sigugun( $keyword . '군' );
+        elsif ( grep { $_ eq $keyword . '군' } @Postcodify::Area::SIGUNGU ) {
+            $self->sigungu( $keyword . '군' );
             $self->use_area(1);
             next;
         }
@@ -241,7 +241,7 @@ sub parse {
 use overload '""' => sub {
     my $self = shift;
     my @address = map { $self->$_ if defined( $self->$_ ) }
-        qw/sido sigugun ilbangu eupmyeon dongri road pobox/;
+        qw/sido sigungu ilbangu eupmyeon dongri road pobox/;
     push @address, join( '-', @{ $self->numbers } )   if @{ $self->numbers };
     push @address, join( ' ', @{ $self->buildings } ) if @{ $self->buildings };
     return join( ' ', grep {length} @address );

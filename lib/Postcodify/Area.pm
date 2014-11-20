@@ -1,7 +1,7 @@
 package Postcodify::Area;
 use utf8;
 
-# %SIDO, @SIGUGUN, %ILBANGU
+# %SIDO, @SIGUNGN, %ILBANGU
 
 ## 전국의 시도 목록 (일반적인 축약형 포함).
 our %SIDO = (
@@ -51,7 +51,7 @@ our %SIDO = (
 );
 
 ## 전국의 시군구 목록 (자치구만 포함, 나머지는 아래에 "일반구"로 별도 표기).
-our @SIGUGUN = (
+our @SIGUNGN = (
     ## 서울
     '강남구',    '강동구', '강북구', '강서구',    '관악구',
     '광진구',    '구로구', '금천구', '노원구',    '도봉구',
