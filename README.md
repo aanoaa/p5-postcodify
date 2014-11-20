@@ -14,7 +14,7 @@ p5-postcodify
 # TEST #
 
     # cpanm Plack
-    $ plackup    # http://localhost:5000
+    $ plackup -Ilib   # http://localhost:5000
 
 # SEE ALSO #
 
