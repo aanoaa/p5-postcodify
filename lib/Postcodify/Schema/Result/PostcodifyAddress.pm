@@ -191,7 +191,6 @@ __PACKAGE__->belongs_to(
   { address_id => "id" },
   {
     is_deferrable => 0,
-    join_type     => "LEFT",
     on_delete     => "NO ACTION",
     on_update     => "NO ACTION",
   },
@@ -203,7 +202,6 @@ __PACKAGE__->belongs_to(
   { address_id => "id" },
   {
     is_deferrable => 0,
-    join_type     => "LEFT",
     on_delete     => "NO ACTION",
     on_update     => "NO ACTION",
   },
@@ -215,7 +213,6 @@ __PACKAGE__->belongs_to(
   { address_id => "id" },
   {
     is_deferrable => 0,
-    join_type     => "LEFT",
     on_delete     => "NO ACTION",
     on_update     => "NO ACTION",
   },
@@ -227,7 +224,6 @@ __PACKAGE__->belongs_to(
   { address_id => "id" },
   {
     is_deferrable => 0,
-    join_type     => "LEFT",
     on_delete     => "NO ACTION",
     on_update     => "NO ACTION",
   },
