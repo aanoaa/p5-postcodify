@@ -178,55 +178,43 @@ __PACKAGE__->set_primary_key("id");
 # Created by DBIx::Class::Schema::Loader v0.07040 @ 2014-11-20 04:57:07
 # DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:/GrjO6jNugO9rugLbHAMKQ
 
-__PACKAGE__->has_many(
-  "roads",
+__PACKAGE__->belongs_to(
+  "road",
   "Postcodify::Schema::Result::PostcodifyRoad",
-  { "foreign.road_id" => "self.road_id" },
+  { road_id => "road_id" },
+  {
+    is_deferrable => 0,
+    on_delete     => "NO ACTION",
+    on_update     => "NO ACTION",
+  },
+);
+
+__PACKAGE__->has_many(
+  "keywords",
+  "Postcodify::Schema::Result::PostcodifyKeyword",
+  { "foreign.address_id" => "self.id" },
   { cascade_copy => 0, cascade_delete => 0 },
 );
 
-__PACKAGE__->belongs_to(
-  "keyword",
-  "Postcodify::Schema::Result::PostcodifyKeyword",
-  { address_id => "id" },
-  {
-    is_deferrable => 0,
-    on_delete     => "NO ACTION",
-    on_update     => "NO ACTION",
-  },
-);
-
-__PACKAGE__->belongs_to(
-  "building",
+__PACKAGE__->has_many(
+  "buildings",
   "Postcodify::Schema::Result::PostcodifyBuilding",
-  { address_id => "id" },
-  {
-    is_deferrable => 0,
-    on_delete     => "NO ACTION",
-    on_update     => "NO ACTION",
-  },
+  { "foreign.address_id" => "self.id" },
+  { cascade_copy => 0, cascade_delete => 0 },
 );
 
-__PACKAGE__->belongs_to(
-  "number",
+__PACKAGE__->has_many(
+  "numbers",
   "Postcodify::Schema::Result::PostcodifyNumber",
-  { address_id => "id" },
-  {
-    is_deferrable => 0,
-    on_delete     => "NO ACTION",
-    on_update     => "NO ACTION",
-  },
+  { "foreign.address_id" => "self.id" },
+  { cascade_copy => 0, cascade_delete => 0 },
 );
 
-__PACKAGE__->belongs_to(
-  "pobox",
+__PACKAGE__->has_many(
+  "poboxes",
   "Postcodify::Schema::Result::PostcodifyPobox",
-  { address_id => "id" },
-  {
-    is_deferrable => 0,
-    on_delete     => "NO ACTION",
-    on_update     => "NO ACTION",
-  },
+  { "foreign.address_id" => "self.id" },
+  { cascade_copy => 0, cascade_delete => 0 },
 );
 
 1;

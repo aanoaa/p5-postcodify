@@ -103,11 +103,15 @@ __PACKAGE__->set_primary_key("seq");
 # Created by DBIx::Class::Schema::Loader v0.07040 @ 2014-11-20 04:57:07
 # DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:4ui6QykE9AHEakb647xSVw
 
-__PACKAGE__->has_many(
-  "addresses",
+__PACKAGE__->belongs_to(
+  "address",
   "Postcodify::Schema::Result::PostcodifyAddress",
-  { "foreign.id" => "self.address_id" },
-  { cascade_copy => 0, cascade_delete => 0 },
+  { address_id => "id" },
+  {
+    is_deferrable => 0,
+    on_delete     => "NO ACTION",
+    on_update     => "NO ACTION",
+  },
 );
 
 1;

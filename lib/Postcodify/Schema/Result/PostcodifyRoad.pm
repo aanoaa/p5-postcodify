@@ -136,16 +136,11 @@ __PACKAGE__->set_primary_key("road_id");
 # Created by DBIx::Class::Schema::Loader v0.07040 @ 2014-11-20 04:57:07
 # DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:hkwhBEATQu4GNC0oNtXo+g
 
-__PACKAGE__->belongs_to(
-  "address",
+__PACKAGE__->has_many(
+  "addresses",
   "Postcodify::Schema::Result::PostcodifyAddress",
-  { road_id => "road_id" },
-  {
-    is_deferrable => 0,
-    join_type     => "LEFT",
-    on_delete     => "NO ACTION",
-    on_update     => "NO ACTION",
-  },
+  { "foreign.road_id" => "self.road_id" },
+  { cascade_copy => 0, cascade_delete => 0 },
 );
 
 1;
