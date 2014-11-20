@@ -188,7 +188,7 @@ __PACKAGE__->has_many(
 __PACKAGE__->belongs_to(
   "keyword",
   "Postcodify::Schema::Result::PostcodifyKeyword",
-  { id => "address_id" },
+  { address_id => "id" },
   {
     is_deferrable => 0,
     join_type     => "LEFT",
@@ -200,7 +200,7 @@ __PACKAGE__->belongs_to(
 __PACKAGE__->belongs_to(
   "building",
   "Postcodify::Schema::Result::PostcodifyBuilding",
-  { id => "address_id" },
+  { address_id => "id" },
   {
     is_deferrable => 0,
     join_type     => "LEFT",
@@ -212,7 +212,7 @@ __PACKAGE__->belongs_to(
 __PACKAGE__->belongs_to(
   "number",
   "Postcodify::Schema::Result::PostcodifyNumber",
-  { id => "address_id" },
+  { address_id => "id" },
   {
     is_deferrable => 0,
     join_type     => "LEFT",
@@ -224,7 +224,7 @@ __PACKAGE__->belongs_to(
 __PACKAGE__->belongs_to(
   "pobox",
   "Postcodify::Schema::Result::PostcodifyPobox",
-  { id => "address_id" },
+  { address_id => "id" },
   {
     is_deferrable => 0,
     join_type     => "LEFT",
