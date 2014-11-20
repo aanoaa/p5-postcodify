@@ -7,6 +7,8 @@ use JSON;
 
 use Postcodify::Util 'trim';
 
+use version; our $VERSION = version->declare("v2.2.0");
+
 has lang => ( is => 'ro', isa => Str, default => 'KO' );
 has sort => ( is => 'ro', isa => Str, default => 'JUSO' );
 has nums => ( is => 'ro', isa => Str );
@@ -116,7 +118,21 @@ sub json {
         push @data, $data;
     }
 
-    return encode_json( [@data] );    # utf8 encoded text
+    return encode_json(
+        {
+            version => $VERSION->stringify,
+            error   => '',
+            msg     => '',
+            count   => scalar @data,
+            time    => '0.004',
+            lang    => $self->lang,
+            sort    => $self->sort,
+            type    => $self->type,
+            nums    => $self->nums,
+            cache   => 'hit',
+            results => [@data]
+        }
+    );    # utf8 encoded text
 }
 
 1;
