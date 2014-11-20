@@ -78,4 +78,11 @@ __PACKAGE__->has_many(
   { cascade_copy => 0, cascade_delete => 0 },
 );
 
+__PACKAGE__->has_many(
+  "english",
+  "Postcodify::Schema::Result::PostcodifyEnglish",
+  { "foreign.ko_crc32" => "self.keyword_crc32" },
+  { cascade_copy => 0, cascade_delete => 0 },
+);
+
 1;
