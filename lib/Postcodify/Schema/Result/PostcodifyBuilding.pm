@@ -71,6 +71,11 @@ __PACKAGE__->set_primary_key("seq");
 # Created by DBIx::Class::Schema::Loader v0.07040 @ 2014-11-20 04:57:07
 # DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:OudDAN66bSe9TuHuAXCG7w
 
+__PACKAGE__->has_many(
+  "addresses",
+  "Postcodify::Schema::Result::PostcodifyAddress",
+  { "foreign.address_id" => "self.address_id" },
+  { cascade_copy => 0, cascade_delete => 0 },
+);
 
-# You can replace this text with custom code or comments, and it will be preserved on regeneration
 1;
