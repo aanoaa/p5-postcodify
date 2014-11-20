@@ -106,7 +106,7 @@ __PACKAGE__->set_primary_key("seq");
 __PACKAGE__->has_many(
   "addresses",
   "Postcodify::Schema::Result::PostcodifyAddress",
-  { "foreign.address_id" => "self.address_id" },
+  { "foreign.id" => "self.address_id" },
   { cascade_copy => 0, cascade_delete => 0 },
 );
 
