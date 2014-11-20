@@ -4,6 +4,7 @@
 ^blib/
 ^scripts/
 ^examples/
+^app.psgi$
 
 # version-control
 ^.git/
