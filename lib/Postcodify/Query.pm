@@ -151,6 +151,14 @@ sub parse {
                 $self->use_area(1);
                 next;
             }
+            elsif ($self->sigungu
+                && $Postcodify::Area::ILBANGU{ $self->sigungu }
+                && grep {/^$keyword$/} @Postcodify::Area::SIGUNGU )
+            {
+                $self->ilbangu($keyword);
+                $self->use_area = 1;
+                next;
+            }
             elsif ( grep {/^$keyword$/} @Postcodify::Area::SIGUNGU ) {
                 $self->sigungu($keyword);
                 $self->use_area(1);
