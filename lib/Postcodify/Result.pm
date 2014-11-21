@@ -143,6 +143,19 @@ sub json {
 
 =head1 NAME
 
-Postcodify::Result - search result
+Postcodify::Result - Contain various search result
+
+=head1 SYNOPSIS
+
+    my $result = Postcodify::Result->new(
+        lang      => 'KO',
+        sort      => 'JUSO',
+        nums      => '123-12',
+        type      => 'JUSO+NUMS',
+        time      => '0.002',
+        resultset => $rs    # PostcodifyRoad prefetched PostcodifyAddress ResultSet
+    );
+
+    print $result->json;    # utf8 encoded text
 
 =cut

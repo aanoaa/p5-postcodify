@@ -256,5 +256,18 @@ use overload '""' => sub {
     return join( ' ', grep {length} @address );
 };
 
-
 1;
+
+=pod
+
+=head1 NAME
+
+Postcodify::Query - convert input text as searchable text
+
+=head1 SYNOPSIS
+
+    my $q = Postcodify::Query->new;
+    $q->parse('서울시 광진구 화양동')
+    print "$q\n";    # 서울특별시 광진구 화양동
+
+=cut

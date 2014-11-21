@@ -14,3 +14,16 @@ sub trim {
 }
 
 1;
+
+=pod
+
+=head1 NAME
+
+Postcodify::Util - Utility subroutine packages
+
+=head1 SYNOPSIS
+
+    use Postcodify::Util 'trim';
+    print trim('   yo   ');    # prints 'yo'
+
+=cut

@@ -196,3 +196,16 @@ sub search {
 }
 
 1;
+
+=pod
+
+=head1 NAME
+
+Postcodify - 도로명주소 우편번호 검색 API
+
+=head1 SYNOPSIS
+
+    my $p      = Postcodify->new;
+    my $result = $p->search('서울시 광진구 화양동');
+
+=cut

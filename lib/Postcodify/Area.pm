@@ -141,3 +141,18 @@ our %ILBANGU = (
 );
 
 1;
+
+=pod
+
+=head1 NAME
+
+Postcodify::Area - LIST and MAP Republic of Korea SIDO and SIGUNGU
+
+=head1 SYNOPSIS
+
+    print $Postcodify::Area::SIDO{'서울'};    # 서울특별시
+    grep {$_ eq '강남구'} @Postcodify::Area::SIGUGUN;
+    grep {$_ eq '덕양구'} @{ $Postcodify::Area::ILBANGU{'고양시'} };
+
+=cut
+
