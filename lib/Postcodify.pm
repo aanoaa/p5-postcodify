@@ -47,6 +47,7 @@ sub search {
     $attr{join}     = [];
     $attr{prefetch} = 'road';
     $attr{distinct} = 1;
+    $attr{rows}     = 30;
     if ( $q->use_area ) {
         $cond{sido_ko}     = $q->sido     if $q->sido;
         $cond{sigungu_ko}  = $q->sigungu  if $q->sigungu;
