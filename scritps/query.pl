@@ -1,16 +1,17 @@
 use utf8;
 use strict;
 use warnings;
+use Encode 'decode_utf8';
 use Data::Dump;
 
 use Postcodify::Query;
 
+die "Usage: $0 <query>" unless @ARGV;
+
 binmode STDOUT, ':utf8';
 binmode STDERR, ':utf8';
 
-my $keyword = '서울시 광진구 자양동 48-3번지';
-my $q       = Postcodify::Query->new;
-$q->parse($keyword);
-print "$keyword\n";
+my $q = Postcodify::Query->new;
+$q->parse( decode_utf8( join( ' ', @ARGV ) ) );
 print "$q\n";
 dd $q;

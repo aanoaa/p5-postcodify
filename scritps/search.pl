@@ -5,9 +5,12 @@ use warnings;
 use Encode 'decode_utf8';
 use Postcodify;
 
+die "Usage: $0 <query>" unless @ARGV;
+
 binmode STDOUT, ':utf8';
 binmode STDERR, ':utf8';
 
 my $p      = Postcodify->new;
-my $result = $p->search('서울 광진구 화양동 48-3번지 웅진빌딩');
-print decode_utf8( $result->json ), "\n";
+my $result = $p->search( decode_utf8( join( ' ', @ARGV ) ) );
+my $json   = decode_utf8( $result->json );
+print length $json > 200 ? substr( $json, 0, 200 ) . '...' : $json, "\n";
