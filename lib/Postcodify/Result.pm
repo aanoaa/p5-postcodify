@@ -9,11 +9,12 @@ use Postcodify::Util 'trim';
 
 use version; our $VERSION = version->declare("v2.2.0");
 
-has lang => ( is => 'ro', isa => Str, default => 'KO' );
-has sort => ( is => 'ro', isa => Str, default => 'JUSO' );
-has nums => ( is => 'ro', isa => Str );
-has type => ( is => 'ro', isa => Str );
-has time => ( is => 'ro', isa => Str );
+has lang  => ( is => 'ro', isa => Str, default => 'KO' );
+has sort  => ( is => 'ro', isa => Str, default => 'JUSO' );
+has nums  => ( is => 'ro', isa => Str );
+has type  => ( is => 'ro', isa => Str );
+has time  => ( is => 'ro', isa => Str );
+has cache => ( is => 'ro', isa => Str, default => 'miss' );
 has resultset => ( is => 'ro' );
 
 sub json {
@@ -130,7 +131,7 @@ sub json {
             sort    => $self->sort,
             type    => $self->type,
             nums    => $self->nums,
-            cache   => 'hit',
+            cache   => $self->cache,
             results => [@data]
         }
     );    # utf8 encoded text
