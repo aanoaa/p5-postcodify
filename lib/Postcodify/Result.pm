@@ -13,6 +13,7 @@ has lang => ( is => 'ro', isa => Str, default => 'KO' );
 has sort => ( is => 'ro', isa => Str, default => 'JUSO' );
 has nums => ( is => 'ro', isa => Str );
 has type => ( is => 'ro', isa => Str );
+has time => ( is => 'ro', isa => Str );
 has resultset => ( is => 'ro' );
 
 sub json {
@@ -124,7 +125,7 @@ sub json {
             error   => '',
             msg     => '',
             count   => scalar @data,
-            time    => '0.004',
+            time    => $self->time,
             lang    => $self->lang,
             sort    => $self->sort,
             type    => $self->type,

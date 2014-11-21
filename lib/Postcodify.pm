@@ -3,6 +3,7 @@ package Postcodify;
 use Moo;
 
 use String::CRC32 'crc32';
+use Time::HiRes qw/gettimeofday tv_interval/;
 
 use Postcodify::Query;
 use Postcodify::Result;
@@ -35,7 +36,8 @@ sub search {
         return;
     }
 
-    my $q = Postcodify::Query->new;
+    my $t0 = [gettimeofday];
+    my $q  = Postcodify::Query->new;
     $q->parse($keyword);
     ## TODO: memcache
     my $search_type = 'NONE';
@@ -187,6 +189,7 @@ sub search {
         sort      => $q->sort,
         nums      => join( '-', @{ $q->numbers } ),
         type      => $search_type,
+        time      => sprintf( '%.4f', tv_interval($t0) ),
         resultset => $rs
     );
 }
