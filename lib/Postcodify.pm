@@ -44,8 +44,7 @@ sub search {
     my ( %cond, %attr, $rs );
     my $address = $self->schema->resultset('PostcodifyAddress');
     ## http://search.cpan.org/~ribasushi/DBIx-Class/lib/DBIx/Class/Manual/Cookbook.pod#Multi-step_and_multiple_joins
-    $attr{join}     = [];
-    $attr{prefetch} = 'road';
+    $attr{join}     = ['road'];
     $attr{distinct} = 1;
     $attr{rows}     = 30;
     if ( $q->use_area ) {
