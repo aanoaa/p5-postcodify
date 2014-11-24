@@ -93,8 +93,8 @@ sub search {
         if ( $q->numbers->[0] ) {
             $search_type .= '+NUMS';
             push @{ $attr{join} }, 'numbers';
-            $cond{'me.num_major'} = $q->numbers->[0];
-            $cond{'me.num_minor'} = $q->numbers->[1] if $q->numbers->[1];
+            $cond{'numbers.num_major'} = $q->numbers->[0];
+            $cond{'numbers.num_minor'} = $q->numbers->[1] if $q->numbers->[1];
         }
 
         ## 일단 검색해 본다.
