@@ -18,7 +18,7 @@ has config => (
 has schema => ( is => 'lazy' );
 
 sub _build_schema {
-    my $db = shift->config->{db};
+    my $db = shift->config->{postcodify_db};
     return Postcodify::Schema->connect(
         {
             dsn            => "dbi:SQLite:dbname=$db",
