@@ -91,7 +91,7 @@ sub search {
 
         ## 번지수 쿼리를 작성한다.
         if ( $q->numbers->[0] ) {
-            my $search_type .= '+NUMS';
+            $search_type .= '+NUMS';
             push @{ $attr{join} }, 'numbers';
             $cond{'me.num_major'} = $q->numbers->[0];
             $cond{'me.num_minor'} = $q->numbers->[1] if $q->numbers->[1];
