@@ -24,8 +24,8 @@ subtest '지번주소로 검색하는 경우' => sub {
     my $sql = as_query( $result->resultset );
     like $sql, qr/JOIN `postcodify_keywords`/;
     like $sql, qr/crc32/;
-    like $sql, qr/`me`.`num_major` =/;
-    like $sql, qr/`me`.`num_minor` =/;
+    like $sql, qr/`numbers`.`num_major` =/;
+    like $sql, qr/`numbers`.`num_minor` =/;
 
     ($result)
         = $p->search(
@@ -33,8 +33,8 @@ subtest '지번주소로 검색하는 경우' => sub {
     $sql = as_query( $result->resultset );
     like $sql, qr/LEFT JOIN `postcodify_english`/;
     like $sql, qr/en_crc32/;
-    like $sql, qr/`me`.`num_major` =/;
-    like $sql, qr/`me`.`num_minor` =/;
+    like $sql, qr/`numbers`.`num_major` =/;
+    like $sql, qr/`numbers`.`num_minor` =/;
 };
 
 subtest '건물명만으로 검색하는 경우' => sub {
