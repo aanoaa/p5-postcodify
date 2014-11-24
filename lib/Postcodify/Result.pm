@@ -18,8 +18,9 @@ has cache => ( is => 'ro', isa => Str, default => 'miss' );
 has time  => ( is => 'ro' );
 has resultset => ( is => 'ro' );
 
-sub json {
+sub data {
     my $self = shift;
+    return () unless $self->resultset;
 
     my @data;
     while ( my $row = $self->resultset->next ) {
@@ -121,6 +122,13 @@ sub json {
         push @data, $data;
     }
 
+    return @data;
+}
+
+sub json {
+    my $self = shift;
+
+    my @data = $self->data();
     return encode_json(
         {
             version => $VERSION->stringify,
