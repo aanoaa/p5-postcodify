@@ -4,6 +4,7 @@ use Moo;
 use Types::Standard qw/Str/;
 
 use JSON;
+use Time::HiRes qw/gettimeofday tv_interval/;
 
 use Postcodify::Util 'trim';
 
@@ -13,8 +14,8 @@ has lang  => ( is => 'ro', isa => Str, default => 'KO' );
 has sort  => ( is => 'ro', isa => Str, default => 'JUSO' );
 has nums  => ( is => 'ro', isa => Str );
 has type  => ( is => 'ro', isa => Str );
-has time  => ( is => 'ro', isa => Str );
 has cache => ( is => 'ro', isa => Str, default => 'miss' );
+has time  => ( is => 'ro' );
 has resultset => ( is => 'ro' );
 
 sub json {
@@ -126,7 +127,7 @@ sub json {
             error   => '',
             msg     => '',
             count   => scalar @data,
-            time    => $self->time,
+            time    => sprintf( '%.4f', tv_interval( $self->time ) ),
             lang    => $self->lang,
             sort    => $self->sort,
             type    => $self->type,
