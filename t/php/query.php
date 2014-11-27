@@ -1,0 +1,35 @@
+<?php
+date_default_timezone_set('Asia/Seoul');
+error_reporting(-1);
+require_once dirname(__FILE__) . '/lib/autoload.php';
+$q = Postcodify_Server_Query::parse_keywords('서울,광진구');
+echo "$q\n";
+$q = Postcodify_Server_Query::parse_keywords('00번지 0호');
+echo "$q\n";
+$q = Postcodify_Server_Query::parse_keywords('화양 3동');
+echo "$q\n";
+$q = Postcodify_Server_Query::parse_keywords('Achasan-ro, Gwangjin-gu, Seoul');
+echo "$q\n";
+$q = Postcodify_Server_Query::parse_keywords('Nonsan P.O.Box, Nonsan-si, Chungcheongnam-do, Korea');
+echo "$q\n";
+$q = Postcodify_Server_Query::parse_keywords('산');
+echo "$q\n";
+$q = Postcodify_Server_Query::parse_keywords('지하');
+echo "$q\n";
+$q = Postcodify_Server_Query::parse_keywords('웅진빌딩 403호');
+echo "$q\n";
+$q = Postcodify_Server_Query::parse_keywords('충남 서산시 고북면');
+echo "$q\n";
+$q = Postcodify_Server_Query::parse_keywords('아차산로');
+echo "$q\n";
+$q = Postcodify_Server_Query::parse_keywords('화양3동 48-3번지');
+echo "$q\n";
+$q = Postcodify_Server_Query::parse_keywords('사서함 400호');
+echo "$q\n";
+$q = Postcodify_Server_Query::parse_keywords('48 - 3번지');
+echo "$q\n";
+$q = Postcodify_Server_Query::parse_keywords('101동');
+echo "$q\n";
+$q = Postcodify_Server_Query::parse_keywords('호잇~');
+echo "$q\n";
+?>
