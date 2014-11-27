@@ -1,7 +1,7 @@
 use utf8;
 
 use open ':std', ':encoding(utf8)';
-use Test::More;
+use Test::More tests => 17;
 
 use Postcodify::Query;
 
@@ -24,4 +24,3 @@ is( $q->parse('사서함 400호')->sort, 'POBOX', '사서함을 확인한다' );
 like( $q->parse('48 3번지'), qr/48/, '건물번호, 지번, 사서함 번호를 따로 적은 경우를 확인한다' );
 like( $q->parse('웅진빌딩 403호'), qr/웅진빌딩/, '그 밖의 키워드는 건물명으로 취급하되, 동·층·호수는 취급하지 않는다' );
 like( $q->parse('호잇~'), qr/호잇/, '그 밖의 키워드가 나오면 그만둔다' );
-done_testing();
