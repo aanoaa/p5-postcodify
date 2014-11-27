@@ -1,4 +1,6 @@
 package Postcodify::Area;
+
+# VERSION
 use utf8;
 
 # %SIDO, @SIGUNGU, %ILBANGU

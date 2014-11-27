@@ -1,5 +1,7 @@
 package Postcodify;
 
+# VERSION
+
 use Moo;
 
 use String::CRC32 'crc32';

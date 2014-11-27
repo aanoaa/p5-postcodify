@@ -1,5 +1,7 @@
 package Postcodify::Result;
 
+# VERSION
+
 use Moo;
 use Types::Standard qw/Str/;
 
@@ -7,8 +9,6 @@ use JSON;
 use Time::HiRes qw/gettimeofday tv_interval/;
 
 use Postcodify::Util 'trim';
-
-use version; our $VERSION = version->declare("v2.2.0");
 
 has lang  => ( is => 'ro', isa => Str, default => 'KO' );
 has sort  => ( is => 'ro', isa => Str, default => 'JUSO' );
@@ -131,7 +131,7 @@ sub json {
     my @data = $self->data();
     return encode_json(
         {
-            version => $VERSION->stringify,
+            version => $Postcodify::Result::VERSION || 'v2.2.0',
             error   => '',
             msg     => '',
             count   => scalar @data,

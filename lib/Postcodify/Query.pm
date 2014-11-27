@@ -1,5 +1,7 @@
 package Postcodify::Query;
 
+# VERSION
+
 use utf8;
 use Moo;
 use Types::Standard qw/Str Bool ArrayRef/;
