@@ -200,6 +200,8 @@ sub search {
 
 =pod
 
+=encoding utf-8
+
 =head1 NAME
 
 Postcodify - 도로명주소 우편번호 검색 API
@@ -208,5 +210,17 @@ Postcodify - 도로명주소 우편번호 검색 API
 
     my $p      = Postcodify->new;
     my $result = $p->search('서울시 광진구 화양동');
+
+=head1 SEE ALSO
+
+=over
+
+=item L<Postcodify::Query>
+
+=item L<Postcodify::Result>
+
+=item https://github.com/kijin/postcodify
+
+=back
 
 =cut
