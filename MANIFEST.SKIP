@@ -13,3 +13,6 @@
 ^.perl-version
 ^dist.ini
 ^README.md
+.sqlite$
+.db$
+^installer.sh$
