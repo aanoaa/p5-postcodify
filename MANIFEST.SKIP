@@ -2,7 +2,6 @@
 ^MANIFEST\.
 ^Makefile$
 ^blib/
-^scripts/
 ^examples/
 ^app.psgi$
 
@@ -13,6 +12,7 @@
 ^.perl-version
 ^dist.ini
 ^README.md
-.sqlite$
-.db$
-^installer.sh$
+^installer.sh
+^postcodify.conf.pl
+^scripts/
+^db/
