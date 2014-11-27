@@ -1,6 +1,6 @@
 package Postcodify::Area;
 
-# VERSION
+our $VERSION = 'v0.2.2'; # VERSION
 use utf8;
 
 # %SIDO, @SIGUNGU, %ILBANGU
@@ -150,6 +150,10 @@ our %ILBANGU = (
 
 Postcodify::Area - LIST and MAP Republic of Korea SIDO and SIGUNGU
 
+=head1 VERSION
+
+version v0.2.2
+
 =head1 SYNOPSIS
 
     print $Postcodify::Area::SIDO{'서울'};    # 서울특별시
@@ -157,4 +161,3 @@ Postcodify::Area - LIST and MAP Republic of Korea SIDO and SIGUNGU
     grep {$_ eq '덕양구'} @{ $Postcodify::Area::ILBANGU{'고양시'} };
 
 =cut
-

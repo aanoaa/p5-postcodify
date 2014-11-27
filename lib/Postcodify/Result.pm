@@ -1,6 +1,6 @@
 package Postcodify::Result;
 
-# VERSION
+our $VERSION = 'v0.2.2'; # VERSION
 
 use Moo;
 use Types::Standard qw/Str/;
@@ -153,6 +153,10 @@ sub json {
 =head1 NAME
 
 Postcodify::Result - Contain various search result
+
+=head1 VERSION
+
+version v0.2.2
 
 =head1 SYNOPSIS
 

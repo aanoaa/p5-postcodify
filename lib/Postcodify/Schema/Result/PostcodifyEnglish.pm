@@ -8,6 +8,10 @@ package Postcodify::Schema::Result::PostcodifyEnglish;
 
 Postcodify::Schema::Result::PostcodifyEnglish
 
+=head1 VERSION
+
+version v0.2.2
+
 =cut
 
 use strict;

@@ -1,6 +1,6 @@
 package Postcodify::Query;
 
-# VERSION
+our $VERSION = 'v0.2.2'; # VERSION
 
 use utf8;
 use Moo;
@@ -265,6 +265,10 @@ use overload '""' => sub {
 =head1 NAME
 
 Postcodify::Query - convert input text as searchable text
+
+=head1 VERSION
+
+version v0.2.2
 
 =head1 SYNOPSIS
 

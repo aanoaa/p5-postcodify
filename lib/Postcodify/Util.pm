@@ -21,6 +21,10 @@ sub trim {
 
 Postcodify::Util - Utility subroutine packages
 
+=head1 VERSION
+
+version v0.2.2
+
 =head1 SYNOPSIS
 
     use Postcodify::Util 'trim';
