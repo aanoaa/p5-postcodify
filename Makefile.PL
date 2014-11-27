@@ -25,7 +25,7 @@ my %WriteMakefileArgs = (
     "String::CRC32" => 0,
     "Types::Standard" => 0
   },
-  "VERSION" => "v0.2.2",
+  "VERSION" => "v0.2.3",
   "test" => {
     "TESTS" => "t/*.t"
   }

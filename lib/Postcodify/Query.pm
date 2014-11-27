@@ -1,6 +1,6 @@
 package Postcodify::Query;
 
-our $VERSION = 'v0.2.2'; # VERSION
+our $VERSION = 'v0.2.3'; # VERSION
 
 use utf8;
 use Moo;
@@ -159,7 +159,7 @@ sub parse {
                 @{ $Postcodify::Area::ILBANGU{ $self->sigungu } } )
             {
                 $self->ilbangu($keyword);
-                $self->use_area = 1;
+                $self->use_area(1);
                 next;
             }
             elsif ( grep {/^$keyword$/} @Postcodify::Area::SIGUNGU ) {
@@ -268,7 +268,7 @@ Postcodify::Query - convert input text as searchable text
 
 =head1 VERSION
 
-version v0.2.2
+version v0.2.3
 
 =head1 SYNOPSIS
 

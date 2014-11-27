@@ -1,6 +1,6 @@
 package Postcodify::Result;
 
-our $VERSION = 'v0.2.2'; # VERSION
+our $VERSION = 'v0.2.3'; # VERSION
 
 use Moo;
 use Types::Standard qw/Str/;
@@ -156,7 +156,7 @@ Postcodify::Result - Contain various search result
 
 =head1 VERSION
 
-version v0.2.2
+version v0.2.3
 
 =head1 SYNOPSIS
 
