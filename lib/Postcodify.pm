@@ -104,6 +104,8 @@ sub search {
 
         ## 검색 결과가 없다면 건물명을 동리로 잘못 해석했을 수도 있으므로 건물명 검색을 다시 시도해 본다.
         if ( !@{ $q->numbers } && !$rs->count && $q->lang eq 'KO' ) {
+            pop @{ $attr{join} };
+            delete $cond{keyword_crc32};
             push @{ $attr{join} }, 'buildings';
             $cond{'buildings.keyword'} = { -like => '%' . $q->dongri . '%' };
             $rs = $address->search( \%cond, \%attr );
