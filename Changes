@@ -1,3 +1,8 @@
+# https://github.com/aanoaa/p5-postcodify/issues for the known issues.
+
+v0.2.3    Fri Nov 28 11:24:53 2014 KST
+  - 지번검색 오류 수정(Query 수정)
+
 v0.2.3    Thu Nov 27 19:17:21 2014 KST
   - 시군구읍면 검색 오류 수정
 
