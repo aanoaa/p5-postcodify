@@ -3,6 +3,7 @@ use strict;
 use warnings;
 use Encode 'decode_utf8';
 use Data::Dump;
+use Data::Printer;
 
 use Postcodify::Query;
 
@@ -14,4 +15,4 @@ binmode STDERR, ':utf8';
 my $q = Postcodify::Query->new;
 $q->parse( decode_utf8( join( ' ', @ARGV ) ) );
 print "$q\n";
-dd $q;
+p $q;
