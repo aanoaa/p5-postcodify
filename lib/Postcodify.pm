@@ -4,6 +4,7 @@ package Postcodify;
 
 use Moo;
 
+use CHI;
 use String::CRC32 'crc32';
 use Time::HiRes qw/gettimeofday/;
 
@@ -16,8 +17,17 @@ has config => (
     coerce  => sub { do shift },
     default => sub { $ENV{POSTCODIFY_CONF} || './postcodify.conf.pl' }
 );
-
 has schema => ( is => 'lazy' );
+has cache => (
+    is      => 'ro',
+    default => sub {
+        CHI->new(
+            driver     => 'FastMmap',
+            root_dir   => './cache',
+            cache_size => '10m'
+        );
+    }
+);
 
 sub _build_schema {
     my $db = shift->config->{postcodify_db};
@@ -41,7 +51,14 @@ sub search {
     my $t0 = [gettimeofday];
     my $q  = Postcodify::Query->new;
     $q->parse($keyword);
-    ## TODO: memcache
+
+    my $customer = $self->cache->get("$q");
+    if ($customer) {
+        $customer->{time}  = $t0;
+        $customer->{cache} = 'hit';
+        return Postcodify::Result->new(%$customer);
+    }
+
     my $search_type = 'NONE';
     my ( %cond, %attr, $rs );
     my $address = $self->schema->resultset('PostcodifyAddress');
@@ -186,15 +203,27 @@ sub search {
         }
     }
     ## 그 밖의 경우 검색 결과가 없는 것으로 한다.
-
-    return Postcodify::Result->new(
-        lang      => $q->lang,
-        sort      => $q->sort,
-        nums      => join( '-', @{ $q->numbers } ),
-        type      => $search_type,
-        time      => $t0,
-        resultset => $rs
+    my $result = Postcodify::Result->new(
+        lang => $q->lang,
+        sort => $q->sort,
+        nums => join( '-', @{ $q->numbers } ),
+        type => $search_type,
+        time => $t0,
     );
+
+    $result->resultset($rs);
+    $self->cache->set(
+        "$q",
+        {
+            lang => $q->lang,
+            sort => $q->sort,
+            nums => join( '-', @{ $q->numbers } ),
+            type => $search_type,
+            data => $result->data,
+        }
+    );
+
+    return $result;
 }
 
 1;

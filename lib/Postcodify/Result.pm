@@ -3,7 +3,7 @@ package Postcodify::Result;
 # VERSION
 
 use Moo;
-use Types::Standard qw/Str/;
+use Types::Standard qw/Str ArrayRef/;
 
 use JSON;
 use Time::HiRes qw/gettimeofday tv_interval/;
@@ -14,15 +14,14 @@ has lang  => ( is => 'ro', isa => Str, default => 'KO' );
 has sort  => ( is => 'ro', isa => Str, default => 'JUSO' );
 has nums  => ( is => 'ro', isa => Str );
 has type  => ( is => 'ro', isa => Str );
-has cache => ( is => 'ro', isa => Str, default => 'miss' );
+has cache => ( is => 'rw', isa => Str, default => 'miss' );
 has time  => ( is => 'ro' );
-has resultset => ( is => 'ro' );
+has resultset => ( is => 'rw', trigger => 1 );
+has data => ( is => 'ro', isa => ArrayRef, default => sub { [] } );
 
-sub data {
+sub _trigger_resultset {
     my $self = shift;
-    return () unless $self->resultset;
 
-    my @data;
     while ( my $row = $self->resultset->next ) {
         ## 한글 도로명 및 지번주소를 정리한다.
         my $address_ko_base = trim(
@@ -119,16 +118,14 @@ sub data {
             }
         };
 
-        push @data, $data;
+        push @{ $self->data }, $data;
     }
-
-    return @data;
 }
 
 sub json {
     my $self = shift;
 
-    my @data = $self->data();
+    my @data = @{ $self->data };
     return encode_json(
         {
             version => $Postcodify::Result::VERSION || 'v2.2.0',
