@@ -1,3 +1,4 @@
+requires 'CHI';
 requires 'DBIx::Class';
 requires 'JSON';
 requires 'Moo';

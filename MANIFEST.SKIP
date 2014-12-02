@@ -16,3 +16,4 @@
 ^postcodify.conf.pl
 ^scripts/
 ^db/
+^cache/
