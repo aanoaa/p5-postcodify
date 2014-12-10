@@ -5,6 +5,7 @@ use Encode 'decode_utf8';
 use Data::Dump;
 use Data::Printer;
 
+use lib 'lib';
 use Postcodify::Query;
 
 die "Usage: $0 <query>" unless @ARGV;
