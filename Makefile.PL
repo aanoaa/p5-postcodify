@@ -20,12 +20,14 @@ my %WriteMakefileArgs = (
   "LICENSE" => "lgpl",
   "NAME" => "Postcodify",
   "PREREQ_PM" => {
+    "CHI" => 0,
+    "DBIx::Class" => 0,
     "JSON" => 0,
     "Moo" => 0,
     "String::CRC32" => 0,
     "Types::Standard" => 0
   },
-  "VERSION" => "v0.2.4",
+  "VERSION" => "v0.2.5",
   "test" => {
     "TESTS" => "t/*.t"
   }
@@ -33,6 +35,8 @@ my %WriteMakefileArgs = (
 
 
 my %FallbackPrereqs = (
+  "CHI" => 0,
+  "DBIx::Class" => 0,
   "ExtUtils::MakeMaker" => 0,
   "JSON" => 0,
   "Moo" => 0,

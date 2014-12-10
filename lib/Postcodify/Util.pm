@@ -23,7 +23,7 @@ Postcodify::Util - Utility subroutine packages
 
 =head1 VERSION
 
-version v0.2.4
+version v0.2.5
 
 =head1 SYNOPSIS
 

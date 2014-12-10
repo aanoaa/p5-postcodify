@@ -1,5 +1,9 @@
 # https://github.com/aanoaa/p5-postcodify/issues for the known issues.
 
+v0.2.4    Wed Dec 10 17:48:13 2014 KST
+  - file cache 사용
+  - MySQL 지원
+
 v0.2.3    Fri Nov 28 11:24:53 2014 KST
   - 지번검색 오류 수정(Query 수정)
 

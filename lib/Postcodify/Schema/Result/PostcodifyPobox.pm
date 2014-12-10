@@ -10,7 +10,7 @@ Postcodify::Schema::Result::PostcodifyPobox
 
 =head1 VERSION
 
-version v0.2.4
+version v0.2.5
 
 =cut
 
