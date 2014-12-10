@@ -30,14 +30,8 @@ has cache => (
 );
 
 sub _build_schema {
-    my $db = shift->config->{postcodify_db};
-    return Postcodify::Schema->connect(
-        {
-            dsn            => "dbi:SQLite:dbname=$db",
-            quote_char     => q{`},
-            sqlite_unicode => 1,
-        }
-    );
+    my $conf = shift->config->{postcodify};
+    return Postcodify::Schema->connect($conf);
 }
 
 sub search {

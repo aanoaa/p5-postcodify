@@ -1,9 +1,14 @@
 use strict;
 use warnings;
+use lib 'lib';
+use Postcodify;
+my $p            = Postcodify->new;
+my $connect_info = $p->config->{postcodify};
+$connect_info->{pass} = delete $connect_info->{password}
+    if $connect_info->{dsn} =~ /mysql/i;
 {
-    schema_class => "Postcodify::Schema",
-    connect_info =>
-        { dsn => "dbi:SQLite:dbname=db/postcodify.20141112.v2.sqlite" },
+    schema_class   => "Postcodify::Schema",
+    connect_info   => $connect_info,
     loader_options => {
         dump_directory            => 'lib',
         naming                    => { ALL => 'v8' },
