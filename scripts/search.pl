@@ -3,6 +3,9 @@ use utf8;
 use strict;
 use warnings;
 use Encode 'decode_utf8';
+
+use lib 'lib';
+
 use Postcodify;
 
 die "Usage: $0 <query>" unless @ARGV;
