@@ -1,4 +1,5 @@
 requires 'CHI';
+requires 'Cache::FastMmap';
 requires 'DBIx::Class';
 requires 'JSON';
 requires 'Moo';
