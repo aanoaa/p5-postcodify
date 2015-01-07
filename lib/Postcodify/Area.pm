@@ -1,6 +1,6 @@
 package Postcodify::Area;
 
-our $VERSION = 'v0.2.5'; # VERSION
+our $VERSION = 'v0.2.6'; # VERSION
 use utf8;
 
 # %SIDO, @SIGUNGU, %ILBANGU
@@ -152,7 +152,7 @@ Postcodify::Area - LIST and MAP Republic of Korea SIDO and SIGUNGU
 
 =head1 VERSION
 
-version v0.2.5
+version v0.2.6
 
 =head1 SYNOPSIS
 

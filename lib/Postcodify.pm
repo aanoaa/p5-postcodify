@@ -1,6 +1,6 @@
 package Postcodify;
 
-our $VERSION = 'v0.2.5'; # VERSION
+our $VERSION = 'v0.2.6'; # VERSION
 
 use Moo;
 
@@ -232,7 +232,7 @@ Postcodify - 도로명주소 우편번호 검색 API
 
 =head1 VERSION
 
-version v0.2.5
+version v0.2.6
 
 =head1 SYNOPSIS
 

@@ -1,6 +1,6 @@
 package Postcodify::Result;
 
-our $VERSION = 'v0.2.5'; # VERSION
+our $VERSION = 'v0.2.6'; # VERSION
 
 use Moo;
 use Types::Standard qw/Str ArrayRef/;
@@ -21,6 +21,8 @@ has data => ( is => 'ro', isa => ArrayRef, default => sub { [] } );
 
 sub _trigger_resultset {
     my $self = shift;
+
+    return unless $self->resultset;
 
     while ( my $row = $self->resultset->next ) {
         ## 한글 도로명 및 지번주소를 정리한다.
@@ -153,7 +155,7 @@ Postcodify::Result - Contain various search result
 
 =head1 VERSION
 
-version v0.2.5
+version v0.2.6
 
 =head1 SYNOPSIS
 

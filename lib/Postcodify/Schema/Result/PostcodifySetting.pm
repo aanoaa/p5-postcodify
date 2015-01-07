@@ -10,7 +10,7 @@ Postcodify::Schema::Result::PostcodifySetting
 
 =head1 VERSION
 
-version v0.2.5
+version v0.2.6
 
 =cut
 
