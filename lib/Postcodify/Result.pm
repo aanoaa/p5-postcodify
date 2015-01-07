@@ -22,6 +22,8 @@ has data => ( is => 'ro', isa => ArrayRef, default => sub { [] } );
 sub _trigger_resultset {
     my $self = shift;
 
+    return unless $self->resultset;
+
     while ( my $row = $self->resultset->next ) {
         ## 한글 도로명 및 지번주소를 정리한다.
         my $address_ko_base = trim(
