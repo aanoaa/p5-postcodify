@@ -12,6 +12,9 @@ binmode STDERR, ':utf8';
 my $app = Plack::App::File->new( file => "./examples/index.html" )->to_app;
 
 builder {
+    enable "Plack::Middleware::Static",
+        path => qr{^/api/},
+        root => './examples';
     mount '/'       => $app;
     mount '/search' => sub {
         my $env    = shift;

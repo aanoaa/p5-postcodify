@@ -23,3 +23,4 @@ nytprof.out
 *.sqlite
 *.db
 cache/
+examples/api
