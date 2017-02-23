@@ -13,6 +13,7 @@ Postcodify::Schema::Result::PostcodifyRoad
 use strict;
 use warnings;
 
+
 =head1 BASE CLASS: L<Postcodify::Schema::Base>
 
 =cut
@@ -29,27 +30,27 @@ __PACKAGE__->table("postcodify_roads");
 
 =head2 road_id
 
-  data_type: 'numeric'
+  data_type: 'decimal'
   is_nullable: 0
-  size: 14
+  size: [14,0]
 
 =head2 road_name_ko
 
   data_type: 'varchar'
   is_nullable: 1
-  size: 40
+  size: 80
 
 =head2 road_name_en
 
   data_type: 'varchar'
   is_nullable: 1
-  size: 40
+  size: 120
 
 =head2 sido_ko
 
   data_type: 'varchar'
   is_nullable: 1
-  size: 40
+  size: 20
 
 =head2 sido_en
 
@@ -61,7 +62,7 @@ __PACKAGE__->table("postcodify_roads");
 
   data_type: 'varchar'
   is_nullable: 1
-  size: 40
+  size: 20
 
 =head2 sigungu_en
 
@@ -73,7 +74,7 @@ __PACKAGE__->table("postcodify_roads");
 
   data_type: 'varchar'
   is_nullable: 1
-  size: 40
+  size: 20
 
 =head2 ilbangu_en
 
@@ -85,7 +86,7 @@ __PACKAGE__->table("postcodify_roads");
 
   data_type: 'varchar'
   is_nullable: 1
-  size: 40
+  size: 20
 
 =head2 eupmyeon_en
 
@@ -93,31 +94,39 @@ __PACKAGE__->table("postcodify_roads");
   is_nullable: 1
   size: 40
 
+=head2 updated
+
+  data_type: 'decimal'
+  is_nullable: 1
+  size: [8,0]
+
 =cut
 
 __PACKAGE__->add_columns(
   "road_id",
-  { data_type => "numeric", is_nullable => 0, size => 14 },
+  { data_type => "decimal", is_nullable => 0, size => [14, 0] },
   "road_name_ko",
-  { data_type => "varchar", is_nullable => 1, size => 40 },
+  { data_type => "varchar", is_nullable => 1, size => 80 },
   "road_name_en",
-  { data_type => "varchar", is_nullable => 1, size => 40 },
+  { data_type => "varchar", is_nullable => 1, size => 120 },
   "sido_ko",
-  { data_type => "varchar", is_nullable => 1, size => 40 },
+  { data_type => "varchar", is_nullable => 1, size => 20 },
   "sido_en",
   { data_type => "varchar", is_nullable => 1, size => 40 },
   "sigungu_ko",
-  { data_type => "varchar", is_nullable => 1, size => 40 },
+  { data_type => "varchar", is_nullable => 1, size => 20 },
   "sigungu_en",
   { data_type => "varchar", is_nullable => 1, size => 40 },
   "ilbangu_ko",
-  { data_type => "varchar", is_nullable => 1, size => 40 },
+  { data_type => "varchar", is_nullable => 1, size => 20 },
   "ilbangu_en",
   { data_type => "varchar", is_nullable => 1, size => 40 },
   "eupmyeon_ko",
-  { data_type => "varchar", is_nullable => 1, size => 40 },
+  { data_type => "varchar", is_nullable => 1, size => 20 },
   "eupmyeon_en",
   { data_type => "varchar", is_nullable => 1, size => 40 },
+  "updated",
+  { data_type => "decimal", is_nullable => 1, size => [8, 0] },
 );
 
 =head1 PRIMARY KEY
@@ -133,8 +142,8 @@ __PACKAGE__->add_columns(
 __PACKAGE__->set_primary_key("road_id");
 
 
-# Created by DBIx::Class::Schema::Loader v0.07040 @ 2014-11-20 04:57:07
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:hkwhBEATQu4GNC0oNtXo+g
+# Created by DBIx::Class::Schema::Loader v0.07043 @ 2017-02-24 07:00:24
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:Szm8TWvi2GJWxqGFGfix0g
 
 __PACKAGE__->has_many(
   "addresses",
