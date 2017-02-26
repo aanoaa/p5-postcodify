@@ -111,7 +111,7 @@ sub _trigger_resultset {
                 short  => $extra_info_short,
                 others => $other_addresses,
                 addrid => $row->id,
-                roadid => $row->road_id
+                roadid => $self->sort eq 'POBOX' ? '' : $row->road_id,
             }
         };
 
