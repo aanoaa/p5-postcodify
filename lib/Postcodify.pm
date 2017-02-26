@@ -49,7 +49,7 @@ sub search {
     my $customer = $self->cache->get("$q");
     if ($customer) {
         $customer->{time}  = $t0;
-        $customer->{cache} = 'hit';
+        $customer->{cache} = 'HIT';
         return Postcodify::Result->new(%$customer);
     }
 
