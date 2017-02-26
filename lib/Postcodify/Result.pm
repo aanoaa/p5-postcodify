@@ -14,7 +14,7 @@ has lang  => ( is => 'ro', isa => Str, default => 'KO' );
 has sort  => ( is => 'ro', isa => Str, default => 'JUSO' );
 has nums  => ( is => 'ro', isa => Str );
 has type  => ( is => 'ro', isa => Str );
-has cache => ( is => 'rw', isa => Str, default => 'miss' );
+has cache => ( is => 'rw', isa => Str, default => 'MISS' );
 has time  => ( is => 'ro' );
 has resultset => ( is => 'rw', trigger => 1 );
 has data => ( is => 'ro', isa => ArrayRef, default => sub { [] } );
