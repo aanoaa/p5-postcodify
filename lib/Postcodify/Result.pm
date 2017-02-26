@@ -125,7 +125,7 @@ sub json {
     my @data = @{ $self->data };
     return encode_json(
         {
-            version => $Postcodify::Result::VERSION || 'v2.2.0',
+            version => $Postcodify::Result::VERSION || 'development',
             error   => '',
             msg     => '',
             count   => scalar @data,
