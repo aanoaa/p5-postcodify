@@ -1,7 +1,7 @@
 use utf8;
 
 use open ':std', ':encoding(utf8)';
-use Test::More tests => 17;
+use Test::More tests => 19;
 
 use Postcodify::Query;
 
@@ -12,8 +12,10 @@ like( $q->parse('00번지 0호'), qr/00-0/,      '지번을 00번지 0호로 쓴
 like( $q->parse('화양 3동'),   qr/화양동/, '행정동, 도로명 등의 숫자 앞에 공백에 있는 경우 붙여쓴다' );
 like( $q->parse('Achasan-ro, Gwangjin-gu, Seoul'), qr/achasanro/, '영문 도로명주소 또는 지번주소인지 확인한다' );
 like( $q->parse('Nonsan P.O.Box, Nonsan-si, Chungcheongnam-do, Korea'), qr//, '영문 사서함 주소인지 확인한다' );
-like( $q->parse('산'),                 qr//,             '키워드가 "산", "지하", 한글 1글자인 경우 건너뛴다' );
-like( $q->parse('지하'),              qr//,             '키워드가 "산", "지하", 한글 1글자인 경우 건너뛴다' );
+like( $q->parse('산'),    qr//,    '키워드가 "지하", 한글 1글자인 경우 건너뛴다. ("읍", "면"은 예외)' );
+like( $q->parse('지하'), qr//,    '키워드가 "지하", 한글 1글자인 경우 건너뛴다. ("읍", "면"은 예외)' );
+like( $q->parse('읍'),    qr/읍/, '키워드가 "지하", 한글 1글자인 경우 건너뛴다. ("읍", "면"은 예외)' );
+like( $q->parse('면'),    qr/면/, '키워드가 "지하", 한글 1글자인 경우 건너뛴다. ("읍", "면"은 예외)' );
 like( $q->parse('웅진빌딩 403호'), qr/웅진빌딩/, '이미 건물명이 나온 경우 건물명만 계속 검색한다' );
 like( $q->parse('충남 서산시 고북면'), qr/충청남도 서산시 고북면/, '시군구읍면을 확인한다' );
 like( $q->parse('아차산로'), qr/아차산로/, '도로명+건물번호를 확인한다' );

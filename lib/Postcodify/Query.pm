@@ -99,9 +99,10 @@ sub parse {
     my @keywords = split /\s+/, $keyword;
     for ( my $i = 0; $i < @keywords; $i++ ) {
         my $keyword = $keywords[$i];
-        ## 키워드가 "산", "지하", 한글 1글자인 경우 건너뛴다.
-        next if length $keyword < 2;
-        next if $keyword eq '지하';
+        ## 키워드가 "지하", 한글 1글자인 경우 건너뛴다. ("읍", "면"은 예외)
+        if ( $keyword ne '읍' && $keyword ne '면' && ( $keyword eq '지하' || length $keyword < 2 ) ) {
+            next;
+        }
 
         ## 첫 번째 구성요소가 시도인지 확인한다.
         if ( $i == 0 ) {
