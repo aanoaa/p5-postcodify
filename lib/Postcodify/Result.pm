@@ -80,24 +80,19 @@ sub _trigger_resultset {
         ## 추가정보를 정리한다.
         my ( $extra_info_long, $extra_info_short, $other_addresses );
         if ( $self->sort eq 'POBOX' ) {
-            $address_ko_new = $address_ko_old
-                = $row->dongri_ko . ' ' . $row->other_addresses;
-            $address_en_new = $address_en_old
-                = $row->dongri_en . ' ' . $row->other_addresses;
+            $address_ko_new  = $address_ko_old   = $row->dongri_ko . ' ' . $row->other_addresses;
+            $address_en_new  = $address_en_old   = $row->dongri_en . ' ' . $row->other_addresses;
             $extra_info_long = $extra_info_short = $other_addresses = '';
         }
         else {
-            $extra_info_long = trim(
-                join( '', $address_ko_old, $row->building_name || '' ) );
-            $extra_info_short = trim(
-                join( '', $row->dongri_ko || '', $row->building_name || '' ) );
+            $extra_info_long = trim( join( '', $address_ko_old, $row->building_name || '' ) );
+            $extra_info_short = trim( join( '', $row->dongri_ko || '', $row->building_name || '' ) );
             $other_addresses = $row->other_addresses;
         }
 
         my $data = {
-            dbid  => $row->address_id,
-            code6 => substr( $row->postcode6, 0, 3 ) . '-'
-                . substr( $row->postcode6, 3, 3 ),
+            dbid    => $row->address_id,
+            code6   => substr( $row->postcode6, 0, 3 ) . '-' . substr( $row->postcode6, 3, 3 ),
             code5   => $row->postcode5,
             address => {
                 base     => $address_ko_base,
@@ -142,7 +137,7 @@ sub json {
             cache   => $self->cache,
             results => [@data]
         }
-    );    # utf8 encoded text
+    ); # utf8 encoded text
 }
 
 1;
