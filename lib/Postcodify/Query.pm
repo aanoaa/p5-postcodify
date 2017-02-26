@@ -24,8 +24,7 @@ has sort      => ( is => 'rw', isa => Str,      default => 'JUSO' );
 sub clear {
     my $self = shift;
 
-    map { my $m = "clear_$_"; $self->$m }
-        qw/sido sigungu ilbangu eupmyeon dongri road pobox/;
+    map { my $m = "clear_$_"; $self->$m } qw/sido sigungu ilbangu eupmyeon dongri road pobox/;
     $self->numbers(   [] );
     $self->buildings( [] );
     $self->use_area(0);
@@ -37,7 +36,7 @@ sub parse {
     my ( $self, $keyword ) = @_;
 
     my $origin = $keyword;
-    $keyword =~ s/^\s+|\s+$//g;    # trim
+    $keyword =~ s/^\s+|\s+$//g; # trim
 
     ## 검색어에서 불필요한 문자를 제거한다.
     $keyword =~ s/[\.,\(\|\)]/ /g;
@@ -66,10 +65,7 @@ sub parse {
     $self->clear;
 
     ## 영문 도로명주소 또는 지번주소인지 확인한다.
-    if ( $keyword
-        =~ m/^(?:b|san|jiha)?(?:\s*|-)([0-9]+)?(?:-([0-9]+))?\s*([a-z0-9-\x20]+(ro|gil|dong|ri))/i
-        )
-    {
+    if ( $keyword =~ m/^(?:b|san|jiha)?(?:\s*|-)([0-9]+)?(?:-([0-9]+))?\s*([a-z0-9-\x20]+(ro|gil|dong|ri))/i ) {
         my $number1   = $1;
         my $number2   = $2;
         my $addr_en   = lc $3;
@@ -118,13 +114,9 @@ sub parse {
 
         ## 이미 건물명이 나온 경우 건물명만 계속 검색한다.
         if ( @{ $self->buildings } ) {
-            $keyword
-                =~ s/(?:[0-9a-z-]+|^[가나다라마바사])[동층호]?$//g;
-            if ( $keyword ne '' && !grep { $_ eq $keyword }
-                @{ $self->buildings } )
-            {
-                push @{ $self->buildings },
-                    $keyword =~ s/(?:아파트|a(?:pt)?|\@)$//r;
+            $keyword =~ s/(?:[0-9a-z-]+|^[가나다라마바사])[동층호]?$//g;
+            if ( $keyword ne '' && !grep { $_ eq $keyword } @{ $self->buildings } ) {
+                push @{ $self->buildings }, $keyword =~ s/(?:아파트|a(?:pt)?|\@)$//r;
                 next;
             }
             else {
@@ -137,7 +129,7 @@ sub parse {
             if ( $sigungu eq '읍' or $sigungu eq '면' ) {
                 if (  !$self->sigungu
                     && $keyword =~ m/^(.+)군([읍면])$/
-                    && grep {/^$1군$/} @Postcodify::Area::SIGUNGU )
+                    && grep { /^$1군$/ } @Postcodify::Area::SIGUNGU )
                 {
                     $self->sigungu("$1군");
                     $self->eupmyeon("$1$2");
@@ -155,14 +147,13 @@ sub parse {
             }
             elsif ($self->sigungu
                 && $Postcodify::Area::ILBANGU{ $self->sigungu }
-                && grep {/^$keyword$/}
-                @{ $Postcodify::Area::ILBANGU{ $self->sigungu } } )
+                && grep { /^$keyword$/ } @{ $Postcodify::Area::ILBANGU{ $self->sigungu } } )
             {
                 $self->ilbangu($keyword);
                 $self->use_area(1);
                 next;
             }
-            elsif ( grep {/^$keyword$/} @Postcodify::Area::SIGUNGU ) {
+            elsif ( grep { /^$keyword$/ } @Postcodify::Area::SIGUNGU ) {
                 $self->sigungu($keyword);
                 $self->use_area(1);
                 next;
@@ -183,10 +174,7 @@ sub parse {
         }
 
         ## 도로명+건물번호를 확인한다.
-        if ( $keyword
-            =~ m/^(.+[로길])((?:지하)?([0-9]+(?:-[0-9]+)?)(?:번지?)?)?$/
-            )
-        {
+        if ( $keyword =~ m/^(.+[로길])((?:지하)?([0-9]+(?:-[0-9]+)?)(?:번지?)?)?$/ ) {
             $self->road($1);
             $self->sort('JUSO');
             if ( defined $3 ) {
@@ -197,11 +185,7 @@ sub parse {
         }
 
         ## 동리+지번을 확인한다.
-        if ( my ( $dongri, $rest, $number )
-            = $keyword
-            =~ /^(.{1,5}(?:[0-9]가|[동리가]))(산?([0-9]+(?:-[0-9]+)?)(?:번지?)?)?$/
-            )
-        {
+        if ( my ( $dongri, $rest, $number ) = $keyword =~ /^(.{1,5}(?:[0-9]가|[동리가]))(산?([0-9]+(?:-[0-9]+)?)(?:번지?)?)?$/ ) {
             $self->dongri( $dongri =~ s/[0-9]([동리])$/$1/r );
             $self->sort('JIBEON');
             if ( defined $number ) {
@@ -223,18 +207,14 @@ sub parse {
         }
 
         ## 건물번호, 지번, 사서함 번호를 따로 적은 경우를 확인한다.
-        if ( $keyword =~ m/^(?:산|지하)?([0-9]+(?:-[0-9]+)?)(?:번지?)?$/ )
-        {
+        if ( $keyword =~ m/^(?:산|지하)?([0-9]+(?:-[0-9]+)?)(?:번지?)?$/ ) {
             push @{ $self->numbers }, $1;
             last;
         }
 
         ## 그 밖의 키워드는 건물명으로 취급하되, 동·층·호수는 취급하지 않는다.
-        if ( $keyword
-            !~ m/(?:[0-9a-z-]+|^[가나다라마바사])[동층호]?$/ )
-        {
-            push @{ $self->buildings },
-                $keyword =~ s/(?:아파트|a(?:pt)?|@)$//r;
+        if ( $keyword !~ m/(?:[0-9a-z-]+|^[가나다라마바사])[동층호]?$/ ) {
+            push @{ $self->buildings }, $keyword =~ s/(?:아파트|a(?:pt)?|@)$//r;
             next;
         }
 
@@ -243,7 +223,7 @@ sub parse {
     }
 
     if ( my $number = shift @{ $self->numbers } ) {
-        $self->numbers( [split /-/, $number] );
+        $self->numbers( [ split /-/, $number ] );
     }
 
     return $self;
@@ -251,11 +231,10 @@ sub parse {
 
 use overload '""' => sub {
     my $self = shift;
-    my @address = map { $self->$_ if defined( $self->$_ ) }
-        qw/sido sigungu ilbangu eupmyeon dongri road pobox/;
+    my @address = map { $self->$_ if defined( $self->$_ ) } qw/sido sigungu ilbangu eupmyeon dongri road pobox/;
     push @address, join( '-', @{ $self->numbers } )   if @{ $self->numbers };
     push @address, join( ' ', @{ $self->buildings } ) if @{ $self->buildings };
-    return join( ' ', grep {length} @address );
+    return join( ' ', grep { length } @address );
 };
 
 1;
