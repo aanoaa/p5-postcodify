@@ -132,8 +132,7 @@ sub search {
         $search_type = 'BUILDING';
         push @{ $attr{join} }, 'buildings';
         for my $building ( @{ $q->buildings } ) {
-            push @{ $cond{'-or'} ||= [] },
-                'buildings.keyword' => { -like => '%' . $building . '%' };
+            push @{ $cond{'-or'} ||= [] }, 'buildings.keyword' => { -like => '%' . $building . '%' };
         }
         $rs = $address->search( \%cond, \%attr );
     }
@@ -143,8 +142,7 @@ sub search {
         push @{ $attr{join} }, 'keywords', 'buildings';
         $cond{keyword_crc32} = crc32( $q->road );
         for my $building ( @{ $q->buildings } ) {
-            push @{ $cond{'-or'} ||= [] },
-                'buildings.keyword' => { -like => '%' . $building . '%' };
+            push @{ $cond{'-or'} ||= [] }, 'buildings.keyword' => { -like => '%' . $building . '%' };
         }
         $rs = $address->search( \%cond, \%attr );
     }
@@ -154,8 +152,7 @@ sub search {
         push @{ $attr{join} }, 'keywords', 'buildings';
         $cond{keyword_crc32} = crc32( $q->dongri );
         for my $building ( @{ $q->buildings } ) {
-            push @{ $cond{'-or'} ||= [] },
-                'buildings.keyword' => { -like => '%' . $building . '%' };
+            push @{ $cond{'-or'} ||= [] }, 'buildings.keyword' => { -like => '%' . $building . '%' };
         }
         $rs = $address->search( \%cond, \%attr );
     }
