@@ -13,6 +13,7 @@ Postcodify::Schema::Result::PostcodifyAddress
 use strict;
 use warnings;
 
+
 =head1 BASE CLASS: L<Postcodify::Schema::Base>
 
 =cut
@@ -30,14 +31,7 @@ __PACKAGE__->table("postcodify_addresses");
 =head2 id
 
   data_type: 'integer'
-  is_auto_increment: 1
   is_nullable: 0
-
-=head2 address_id
-
-  data_type: 'char'
-  is_nullable: 1
-  size: 25
 
 =head2 postcode5
 
@@ -53,28 +47,27 @@ __PACKAGE__->table("postcodify_addresses");
 
 =head2 road_id
 
-  data_type: 'numeric'
+  data_type: 'decimal'
   is_nullable: 1
-  size: 14
+  size: [14,0]
 
 =head2 num_major
 
-  data_type: 'integer'
+  data_type: 'smallint'
+  extra: {unsigned => 1}
   is_nullable: 1
-  size: 5
 
 =head2 num_minor
 
-  data_type: 'integer'
+  data_type: 'smallint'
+  extra: {unsigned => 1}
   is_nullable: 1
-  size: 5
 
 =head2 is_basement
 
-  data_type: 'integer'
+  data_type: 'tinyint'
   default_value: 0
   is_nullable: 1
-  size: 1
 
 =head2 dongri_ko
 
@@ -90,22 +83,27 @@ __PACKAGE__->table("postcodify_addresses");
 
 =head2 jibeon_major
 
-  data_type: 'integer'
+  data_type: 'smallint'
+  extra: {unsigned => 1}
   is_nullable: 1
-  size: 5
 
 =head2 jibeon_minor
 
-  data_type: 'integer'
+  data_type: 'smallint'
+  extra: {unsigned => 1}
   is_nullable: 1
-  size: 5
 
 =head2 is_mountain
 
-  data_type: 'integer'
+  data_type: 'tinyint'
   default_value: 0
   is_nullable: 1
-  size: 1
+
+=head2 building_id
+
+  data_type: 'decimal'
+  is_nullable: 1
+  size: [25,0]
 
 =head2 building_name
 
@@ -113,53 +111,60 @@ __PACKAGE__->table("postcodify_addresses");
   is_nullable: 1
   size: 80
 
-=head2 other_addresses
+=head2 building_nums
 
   data_type: 'varchar'
   is_nullable: 1
-  size: 2000
+  size: 120
+
+=head2 other_addresses
+
+  data_type: 'text'
+  is_nullable: 1
 
 =head2 updated
 
-  data_type: 'numeric'
+  data_type: 'decimal'
   is_nullable: 1
-  size: 8
+  size: [8,0]
 
 =cut
 
 __PACKAGE__->add_columns(
   "id",
-  { data_type => "integer", is_auto_increment => 1, is_nullable => 0 },
-  "address_id",
-  { data_type => "char", is_nullable => 1, size => 25 },
+  { data_type => "integer", is_nullable => 0 },
   "postcode5",
   { data_type => "char", is_nullable => 1, size => 5 },
   "postcode6",
   { data_type => "char", is_nullable => 1, size => 6 },
   "road_id",
-  { data_type => "numeric", is_nullable => 1, size => 14 },
+  { data_type => "decimal", is_nullable => 1, size => [14, 0] },
   "num_major",
-  { data_type => "integer", is_nullable => 1, size => 5 },
+  { data_type => "smallint", extra => { unsigned => 1 }, is_nullable => 1 },
   "num_minor",
-  { data_type => "integer", is_nullable => 1, size => 5 },
+  { data_type => "smallint", extra => { unsigned => 1 }, is_nullable => 1 },
   "is_basement",
-  { data_type => "integer", default_value => 0, is_nullable => 1, size => 1 },
+  { data_type => "tinyint", default_value => 0, is_nullable => 1 },
   "dongri_ko",
   { data_type => "varchar", is_nullable => 1, size => 80 },
   "dongri_en",
   { data_type => "varchar", is_nullable => 1, size => 80 },
   "jibeon_major",
-  { data_type => "integer", is_nullable => 1, size => 5 },
+  { data_type => "smallint", extra => { unsigned => 1 }, is_nullable => 1 },
   "jibeon_minor",
-  { data_type => "integer", is_nullable => 1, size => 5 },
+  { data_type => "smallint", extra => { unsigned => 1 }, is_nullable => 1 },
   "is_mountain",
-  { data_type => "integer", default_value => 0, is_nullable => 1, size => 1 },
+  { data_type => "tinyint", default_value => 0, is_nullable => 1 },
+  "building_id",
+  { data_type => "decimal", is_nullable => 1, size => [25, 0] },
   "building_name",
   { data_type => "varchar", is_nullable => 1, size => 80 },
+  "building_nums",
+  { data_type => "varchar", is_nullable => 1, size => 120 },
   "other_addresses",
-  { data_type => "varchar", is_nullable => 1, size => 2000 },
+  { data_type => "text", is_nullable => 1 },
   "updated",
-  { data_type => "numeric", is_nullable => 1, size => 8 },
+  { data_type => "decimal", is_nullable => 1, size => [8, 0] },
 );
 
 =head1 PRIMARY KEY
@@ -175,8 +180,8 @@ __PACKAGE__->add_columns(
 __PACKAGE__->set_primary_key("id");
 
 
-# Created by DBIx::Class::Schema::Loader v0.07040 @ 2014-11-20 04:57:07
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:/GrjO6jNugO9rugLbHAMKQ
+# Created by DBIx::Class::Schema::Loader v0.07043 @ 2017-02-24 07:00:24
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:7LfHPw/vEXQyPrpM4nwrWg
 
 __PACKAGE__->belongs_to(
   "road",

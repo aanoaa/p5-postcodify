@@ -13,6 +13,7 @@ Postcodify::Schema::Result::PostcodifyPobox
 use strict;
 use warnings;
 
+
 =head1 BASE CLASS: L<Postcodify::Schema::Base>
 
 =cut
@@ -30,7 +31,6 @@ __PACKAGE__->table("postcodify_pobox");
 =head2 seq
 
   data_type: 'integer'
-  is_auto_increment: 1
   is_nullable: 0
 
 =head2 address_id
@@ -46,45 +46,45 @@ __PACKAGE__->table("postcodify_pobox");
 
 =head2 range_start_major
 
-  data_type: 'integer'
+  data_type: 'smallint'
+  extra: {unsigned => 1}
   is_nullable: 1
-  size: 5
 
 =head2 range_start_minor
 
-  data_type: 'integer'
+  data_type: 'smallint'
+  extra: {unsigned => 1}
   is_nullable: 1
-  size: 5
 
 =head2 range_end_major
 
-  data_type: 'integer'
+  data_type: 'smallint'
+  extra: {unsigned => 1}
   is_nullable: 1
-  size: 5
 
 =head2 range_end_minor
 
-  data_type: 'integer'
+  data_type: 'smallint'
+  extra: {unsigned => 1}
   is_nullable: 1
-  size: 5
 
 =cut
 
 __PACKAGE__->add_columns(
   "seq",
-  { data_type => "integer", is_auto_increment => 1, is_nullable => 0 },
+  { data_type => "integer", is_nullable => 0 },
   "address_id",
   { data_type => "integer", is_nullable => 0 },
   "keyword",
   { data_type => "varchar", is_nullable => 1, size => 40 },
   "range_start_major",
-  { data_type => "integer", is_nullable => 1, size => 5 },
+  { data_type => "smallint", extra => { unsigned => 1 }, is_nullable => 1 },
   "range_start_minor",
-  { data_type => "integer", is_nullable => 1, size => 5 },
+  { data_type => "smallint", extra => { unsigned => 1 }, is_nullable => 1 },
   "range_end_major",
-  { data_type => "integer", is_nullable => 1, size => 5 },
+  { data_type => "smallint", extra => { unsigned => 1 }, is_nullable => 1 },
   "range_end_minor",
-  { data_type => "integer", is_nullable => 1, size => 5 },
+  { data_type => "smallint", extra => { unsigned => 1 }, is_nullable => 1 },
 );
 
 =head1 PRIMARY KEY
@@ -100,8 +100,8 @@ __PACKAGE__->add_columns(
 __PACKAGE__->set_primary_key("seq");
 
 
-# Created by DBIx::Class::Schema::Loader v0.07040 @ 2014-11-20 04:57:07
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:4ui6QykE9AHEakb647xSVw
+# Created by DBIx::Class::Schema::Loader v0.07043 @ 2017-02-24 07:00:24
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:clLY0Hg3WmB7V/xaNXtVKg
 
 __PACKAGE__->belongs_to(
   "address",

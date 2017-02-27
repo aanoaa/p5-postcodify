@@ -49,7 +49,7 @@ sub search {
     my $customer = $self->cache->get("$q");
     if ($customer) {
         $customer->{time}  = $t0;
-        $customer->{cache} = 'hit';
+        $customer->{cache} = 'HIT';
         return Postcodify::Result->new(%$customer);
     }
 
@@ -57,9 +57,10 @@ sub search {
     my ( %cond, %attr, $rs );
     my $address = $self->schema->resultset('PostcodifyAddress');
     ## http://search.cpan.org/~ribasushi/DBIx-Class/lib/DBIx/Class/Manual/Cookbook.pod#Multi-step_and_multiple_joins
-    $attr{join}     = ['road'];
-    $attr{distinct} = 1;
-    $attr{rows}     = 30;
+    $cond{'me.building_id'} = { '!=' => undef };
+    $attr{join}             = ['road'];
+    $attr{distinct}         = 1;
+    $attr{rows}             = 30;
     if ( $q->use_area ) {
         $cond{sido_ko}     = $q->sido     if $q->sido;
         $cond{sigungu_ko}  = $q->sigungu  if $q->sigungu;
@@ -131,8 +132,7 @@ sub search {
         $search_type = 'BUILDING';
         push @{ $attr{join} }, 'buildings';
         for my $building ( @{ $q->buildings } ) {
-            push @{ $cond{'-or'} ||= [] },
-                'buildings.keyword' => { -like => '%' . $building . '%' };
+            push @{ $cond{'-or'} ||= [] }, 'buildings.keyword' => { -like => '%' . $building . '%' };
         }
         $rs = $address->search( \%cond, \%attr );
     }
@@ -142,8 +142,7 @@ sub search {
         push @{ $attr{join} }, 'keywords', 'buildings';
         $cond{keyword_crc32} = crc32( $q->road );
         for my $building ( @{ $q->buildings } ) {
-            push @{ $cond{'-or'} ||= [] },
-                'buildings.keyword' => { -like => '%' . $building . '%' };
+            push @{ $cond{'-or'} ||= [] }, 'buildings.keyword' => { -like => '%' . $building . '%' };
         }
         $rs = $address->search( \%cond, \%attr );
     }
@@ -153,8 +152,7 @@ sub search {
         push @{ $attr{join} }, 'keywords', 'buildings';
         $cond{keyword_crc32} = crc32( $q->dongri );
         for my $building ( @{ $q->buildings } ) {
-            push @{ $cond{'-or'} ||= [] },
-                'buildings.keyword' => { -like => '%' . $building . '%' };
+            push @{ $cond{'-or'} ||= [] }, 'buildings.keyword' => { -like => '%' . $building . '%' };
         }
         $rs = $address->search( \%cond, \%attr );
     }

@@ -2,6 +2,7 @@ package Postcodify::Result;
 
 # VERSION
 
+use utf8;
 use Moo;
 use Types::Standard qw/Str ArrayRef/;
 
@@ -14,7 +15,7 @@ has lang  => ( is => 'ro', isa => Str, default => 'KO' );
 has sort  => ( is => 'ro', isa => Str, default => 'JUSO' );
 has nums  => ( is => 'ro', isa => Str );
 has type  => ( is => 'ro', isa => Str );
-has cache => ( is => 'rw', isa => Str, default => 'miss' );
+has cache => ( is => 'rw', isa => Str, default => 'MISS' );
 has time  => ( is => 'ro' );
 has resultset => ( is => 'rw', trigger => 1 );
 has data => ( is => 'ro', isa => ArrayRef, default => sub { [] } );
@@ -26,98 +27,86 @@ sub _trigger_resultset {
 
     while ( my $row = $self->resultset->next ) {
         ## 한글 도로명 및 지번주소를 정리한다.
-        my $address_ko_base = trim(
+        my $road      = $row->road;
+        my $ko_common = trim(
             sprintf "%s %s %s %s",
-            $row->road->sido_ko     || '',
-            $row->road->sigungu_ko  || '',
-            $row->road->ilbangu_ko  || '',
-            $row->road->eupmyeon_ko || ''
+            $road->sido_ko     || '',
+            $road->sigungu_ko  || '',
+            $road->ilbangu_ko  || '',
+            $road->eupmyeon_ko || ''
         );
-        my $address_ko_new = trim(
+        my $ko_doro = trim(
             sprintf "%s %s %s%s",
-            $row->road->road_name_ko || '',
+            $road->road_name_ko || '',
             $row->is_basement ? '지하' : '',
             $row->num_major || '',
             $row->num_minor ? '-' . $row->num_minor : ''
         );
-        my $address_ko_old = trim(
+        my $ko_jibeon = trim(
             sprintf "%s %s %s%s",
             $row->dongri_ko || '',
             $row->is_mountain ? '산' : '',
             $row->jibeon_major || '',
             $row->jibeon_minor ? '-' . $row->jibeon_minor : ''
         );
-        $address_ko_base =~ s/ {2,}/ /g;
-        $address_ko_new =~ s/ {2,}/ /g;
-        $address_ko_old =~ s/ {2,}/ /g;
+        $ko_common =~ s/ {2,}/ /g;
+        $ko_doro =~ s/ {2,}/ /g;
+        $ko_jibeon =~ s/ {2,}/ /g;
 
         ## 영문 도로명 및 지번주소를 정리한다.
-        my $address_en_base = trim(
+        my $en_common = trim(
             sprintf "%s %s %s %s",
-            $row->road->eupmyeon_en || '',
-            $row->road->ilbangu_en  || '',
-            $row->road->sigungu_en  || '',
-            $row->road->sido_en     || ''
+            $road->eupmyeon_en ? $road->eupmyeon_en . ', ' : '',
+            $road->ilbangu_en  ? $road->ilbangu_en . ', '  : '',
+            $road->sigungu_en  ? $road->sigungu_en . ', '  : '',
+            $road->sido_en || ''
         );
-        my $address_en_new = trim(
-            sprintf "%s %s%s %s",
+        my $en_doro = trim(
+            sprintf "%s %s%s, %s",
             $row->is_basement ? 'Jiha' : '',
             $row->num_major || '',
             $row->num_minor ? '-' . $row->num_minor : '',
-            $row->road->road_name_en || ''
+            $road->road_name_en || ''
         );
-        my $address_en_old = trim(
-            sprintf "%s %s%s %s",
+        my $en_jibeon = trim(
+            sprintf "%s %s%s, %s",
             $row->is_mountain ? 'San' : '',
             $row->jibeon_major || '',
             $row->jibeon_minor ? '-' . $row->jibeon_minor : '',
             $row->dongri_en || ''
         );
-        $address_en_base =~ s/ {2,}/ /g;
-        $address_en_new =~ s/ {2,}/ /g;
-        $address_en_old =~ s/ {2,}/ /g;
+        $en_common =~ s/ {2,}/ /g;
+        $en_doro =~ s/ {2,}/ /g;
+        $en_jibeon =~ s/ {2,}/ /g;
 
         ## 추가정보를 정리한다.
         my ( $extra_info_long, $extra_info_short, $other_addresses );
         if ( $self->sort eq 'POBOX' ) {
-            $address_ko_new = $address_ko_old
-                = $row->dongri_ko . ' ' . $row->other_addresses;
-            $address_en_new = $address_en_old
-                = $row->dongri_en . ' ' . $row->other_addresses;
+            $ko_doro         = $ko_jibeon        = $row->dongri_ko . ' ' . $row->other_addresses;
+            $en_doro         = $en_jibeon        = $row->dongri_en . ' ' . $row->other_addresses;
             $extra_info_long = $extra_info_short = $other_addresses = '';
         }
         else {
-            $extra_info_long = trim(
-                join( '', $address_ko_old, $row->building_name || '' ) );
-            $extra_info_short = trim(
-                join( '', $row->dongri_ko || '', $row->building_name || '' ) );
+            $extra_info_long = trim( join( '', $ko_jibeon, $row->building_name || '' ) );
+            $extra_info_short = trim( join( '', $row->dongri_ko || '', $row->building_name || '' ) );
             $other_addresses = $row->other_addresses;
         }
 
         my $data = {
-            dbid  => $row->address_id,
-            code6 => substr( $row->postcode6, 0, 3 ) . '-'
-                . substr( $row->postcode6, 3, 3 ),
-            code5   => $row->postcode5,
-            address => {
-                base     => $address_ko_base,
-                new      => $address_ko_new,
-                old      => $address_ko_old,
-                building => $row->building_name
-            },
-            english => {
-                base     => $address_en_base,
-                new      => $address_en_new,
-                old      => $address_en_old,
-                building => ''
-            },
-            other => {
-                long   => $extra_info_long,
-                short  => $extra_info_short,
-                others => $other_addresses,
-                addrid => $row->id,
-                roadid => $row->road_id
-            }
+            postcode5       => $row->postcode5,
+            postcode6       => $row->postcode6,
+            ko_common       => $ko_common,
+            ko_doro         => $ko_doro,
+            ko_jibeon       => $ko_jibeon,
+            en_common       => $en_common,
+            en_doro         => $en_doro,
+            en_jibeon       => $en_jibeon,
+            building_id     => $row->building_id,
+            building_name   => $row->building_name || '',
+            building_nums   => $row->building_nums || '',
+            other_addresses => $other_addresses || '',
+            road_id         => $self->sort eq 'POBOX' ? '' : substr( $row->road_id, 0, 12 ),
+            internal_id     => $row->id,
         };
 
         push @{ $self->data }, $data;
@@ -130,7 +119,8 @@ sub json {
     my @data = @{ $self->data };
     return encode_json(
         {
-            version => $Postcodify::Result::VERSION || 'v2.2.0',
+            # for compartible js library
+            version => $Postcodify::Result::VERSION || 'v3.0.0',
             error   => '',
             msg     => '',
             count   => scalar @data,
@@ -142,7 +132,7 @@ sub json {
             cache   => $self->cache,
             results => [@data]
         }
-    );    # utf8 encoded text
+    ); # utf8 encoded text
 }
 
 1;

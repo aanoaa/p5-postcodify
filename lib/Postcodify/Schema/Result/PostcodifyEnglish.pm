@@ -13,6 +13,7 @@ Postcodify::Schema::Result::PostcodifyEnglish
 use strict;
 use warnings;
 
+
 =head1 BASE CLASS: L<Postcodify::Schema::Base>
 
 =cut
@@ -30,7 +31,6 @@ __PACKAGE__->table("postcodify_english");
 =head2 seq
 
   data_type: 'integer'
-  is_auto_increment: 1
   is_nullable: 0
 
 =head2 ko
@@ -42,8 +42,8 @@ __PACKAGE__->table("postcodify_english");
 =head2 ko_crc32
 
   data_type: 'integer'
+  extra: {unsigned => 1}
   is_nullable: 1
-  size: 10
 
 =head2 en
 
@@ -54,22 +54,22 @@ __PACKAGE__->table("postcodify_english");
 =head2 en_crc32
 
   data_type: 'integer'
+  extra: {unsigned => 1}
   is_nullable: 1
-  size: 10
 
 =cut
 
 __PACKAGE__->add_columns(
   "seq",
-  { data_type => "integer", is_auto_increment => 1, is_nullable => 0 },
+  { data_type => "integer", is_nullable => 0 },
   "ko",
   { data_type => "varchar", is_nullable => 1, size => 40 },
   "ko_crc32",
-  { data_type => "integer", is_nullable => 1, size => 10 },
+  { data_type => "integer", extra => { unsigned => 1 }, is_nullable => 1 },
   "en",
   { data_type => "varchar", is_nullable => 1, size => 40 },
   "en_crc32",
-  { data_type => "integer", is_nullable => 1, size => 10 },
+  { data_type => "integer", extra => { unsigned => 1 }, is_nullable => 1 },
 );
 
 =head1 PRIMARY KEY
@@ -85,8 +85,8 @@ __PACKAGE__->add_columns(
 __PACKAGE__->set_primary_key("seq");
 
 
-# Created by DBIx::Class::Schema::Loader v0.07040 @ 2014-11-20 04:57:07
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:49E7feB69Lh504SWSaoD8g
+# Created by DBIx::Class::Schema::Loader v0.07043 @ 2017-02-24 07:00:24
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:SP0gAAH63zKWFBHLG20r6Q
 
 __PACKAGE__->belongs_to(
   "keyword",
