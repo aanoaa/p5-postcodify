@@ -1,0 +1,7 @@
+cpanfile
+dist.ini
+MANIFEST.SKIP
+.pause
+cache/
+db/
+scripts/
