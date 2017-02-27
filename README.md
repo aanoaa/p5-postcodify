@@ -10,19 +10,6 @@ p5-postcodify
 
 configure in `postcodify.conf.pl`
 
-## SQLite data file ##
-
-    # requires 2GB+ disk
-    $ cd db/
-    $ wget http://storage.poesis.kr/downloads/post/postcodify.20141112.v2.sqlite.xz
-    $ xz -d postcodify.20141112.v2.sqlite.xz
-
-    # or just
-    $ wget -qO- https://raw.githubusercontent.com/aanoaa/p5-postcodify/develop/installer.sh | sh
-
-    # does not have `wget`?
-    $ curl https://raw.githubusercontent.com/aanoaa/p5-postcodify/develop/installer.sh | sh
-
 ## MySQL data file ##
 
     $ wget http://storage.poesis.kr/downloads/post/postcodify.20161230.v3.mysqldump.xz
