@@ -1,19 +1,7 @@
-# Makemaker generated files and dirs.
-^MANIFEST\.
-^Makefile$
-^blib/
-^examples/
-^app.psgi$
-
-# version-control
-^.git/
-^.gitignore
-
-^.perl-version
-^dist.ini
-^README.md
-^installer.sh
-^postcodify.conf.pl
-^scripts/
-^db/
-^cache/
+cpanfile
+dist.ini
+MANIFEST.SKIP
+.pause
+cache/
+db/
+scripts/
