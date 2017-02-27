@@ -20,12 +20,8 @@ configure in `postcodify.conf.pl`
 
 # TEST #
 
-    $ cpanm Encode
+    $ cpanm Encode    # scripts/search.pl requirements
     $ perl scripts/search.pl 서울시 강남구 논현동 99-1
-
-    # web application
-    $ cpanm Plack
-    $ plackup -Ilib   # http://localhost:5000
 
 # SEE ALSO #
 
