@@ -25,3 +25,4 @@ nytprof.out
 *.db
 cache/
 examples/api
+data/
