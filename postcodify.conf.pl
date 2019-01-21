@@ -1,10 +1,5 @@
-#!/usr/bin/env perl
-use strict;
-use warnings;
-
 my $PORT = $ENV{PORT} || 5000;
-
-return  {
+{
     ## MySQL
     postcodify => {
         dsn               => $ENV{POSTCODIFY_DSN}      || 'dbi:mysql:postcodify:127.0.0.1',
