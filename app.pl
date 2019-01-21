@@ -4,6 +4,8 @@ use Mojolicious::Lite;
 use Encode qw/decode_utf8/;
 use Postcodify;
 
+plugin 'Config';
+
 app->defaults(
     postcodify => Postcodify->new( config => $ENV{MOJO_CONFIG} || './postcodify.conf.pl' ),
 );
