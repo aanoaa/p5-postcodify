@@ -1,7 +1,9 @@
 requires 'CHI';
 requires 'Cache::FastMmap';
 requires 'DBIx::Class';
+requires 'Encode';
 requires 'JSON';
+requires 'Mojolicious'
 requires 'Moo';
 requires 'String::CRC32';
 requires 'Types::Standard';
