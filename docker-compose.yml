@@ -1,0 +1,28 @@
+version: "3.2"
+services:
+  postcodify:
+    image: aanoaa/postcodify:v3
+    ports:
+      - "5000:5000"
+    environment:
+      POSTCODIFY_DSN: 'dbi:mysql:postcodify:database'
+      POSTCODIFY_NAME: 'postcodify'
+      POSTCODIFY_USERNAME: 'postcodify'
+      POSTCODIFY_PASSWORD: 'postcodify'
+  database:
+    image: mariadb:10.4
+    volumes:
+      - type: volume
+        source: postcodify-db
+        target: /var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: v3ryv3rys3cr3t
+      MYSQL_DATABASE: postcodify
+      MYSQL_USER: postcodify
+      MYSQL_PASSWORD: postcodify
+    ports:
+      - "3306:3306"
+
+volumes:
+  postcodify-db:
+    external: true
