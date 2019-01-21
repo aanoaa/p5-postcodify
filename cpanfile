@@ -1,5 +1,6 @@
 requires 'CHI';
 requires 'Cache::FastMmap';
+requires 'DBD::mysql';
 requires 'DBIx::Class';
 requires 'Encode';
 requires 'JSON';
