@@ -14,7 +14,7 @@ WORKDIR /tmp
 COPY cpanfile cpanfile
 RUN cpanm --notest --installdeps .
 ENV MOJO_HOME=/home/postcodify
-ENV MOJO_CONFIG=postcodify.conf.pl
+ENV MOJO_CONFIG=./postcodify.conf.pl
 ENV PERL5LIB=$PERL5LIB:./lib
 # Everything up to cached.
 
